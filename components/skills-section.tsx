@@ -105,13 +105,21 @@ export function SkillsSection() {
                 </div>
               </div>
 
-              <div className="mb-3 flex items-center gap-2">
-                <span className="rounded-full bg-primary/15 px-2.5 py-0.5 text-xs font-medium text-primary">
-                  {skill.level}%
-                </span>
-                <span className="text-[11px] text-muted-foreground">
-                  proficiency
-                </span>
+              <div className="mb-3">
+                <div className="mb-1.5 flex items-center justify-between">
+                  <span className="text-[11px] text-muted-foreground">
+                    proficiency
+                  </span>
+                  <span className="text-xs font-medium text-primary">
+                    {skill.level}%
+                  </span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+                  <div
+                    className="h-full rounded-full bg-primary transition-all duration-500"
+                    style={{ width: `${skill.level}%` }}
+                  />
+                </div>
               </div>
 
               <div className="flex flex-wrap gap-1.5">
