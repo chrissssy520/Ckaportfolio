@@ -3,11 +3,17 @@ import {
   Database,
   BarChart3,
   Palette,
-  Scissors,
+  Languages,
   BrainCircuit,
   Code2,
   Search,
 } from "lucide-react"
+
+function getSkillLabel(level: number): string {
+  if (level <= 35) return "Beginner"
+  if (level <= 65) return "Intermediate"
+  return "Advanced"
+}
 
 const skills = [
   {
@@ -33,9 +39,9 @@ const skills = [
   },
   {
     name: "Power BI",
-    detail: "Dashboards & DAX",
+    detail: "Currently Learning",
     icon: BarChart3,
-    level: 50,
+    level: 30,
     tags: ["Visualizations", "DAX (Learning)", "Data Modeling"],
   },
   {
@@ -60,11 +66,11 @@ const skills = [
     tags: ["AI-Assisted Dev", "Web Prototypes", "No-Code/Low-Code"],
   },
   {
-    name: "Photo & Video Editing",
-    detail: "Creative Production",
-    icon: Scissors,
-    level: 80,
-    tags: ["Lightroom", "Premiere Pro", "Color Grading"],
+    name: "English Language",
+    detail: "Communication",
+    icon: Languages,
+    level: 70,
+    tags: ["Written", "Verbal", "Technical Writing"],
   },
 ]
 
@@ -108,7 +114,7 @@ export function SkillsSection() {
               <div className="mb-3">
                 <div className="mb-1.5 flex items-center justify-between">
                   <span className="text-[11px] text-muted-foreground">
-                    proficiency
+                    {getSkillLabel(skill.level)}
                   </span>
                   <span className="text-xs font-medium text-primary">
                     {skill.level}%
