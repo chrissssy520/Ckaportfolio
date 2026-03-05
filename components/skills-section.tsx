@@ -7,6 +7,7 @@ import {
   BrainCircuit,
   Code2,
   Search,
+  MonitorSmartphone,
 } from "lucide-react"
 
 function getSkillLabel(level: number): string {
@@ -71,6 +72,13 @@ const skills = [
     icon: Languages,
     level: 70,
     tags: ["Written", "Verbal", "Technical Writing"],
+  },
+  {
+    name: "Microsoft Suite",
+    detail: "Productivity Tools",
+    icon: MonitorSmartphone,
+    level: 75,
+    tags: ["Word", "PowerPoint", "Outlook", "Teams"],
   },
 ]
 
