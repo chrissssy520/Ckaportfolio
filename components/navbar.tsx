@@ -6,7 +6,9 @@ import { Menu, X } from "lucide-react"
 const navLinks = [
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
+  { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ]
 
@@ -15,12 +17,14 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
-        <a href="#" className="text-lg font-semibold tracking-tight text-foreground">
-          {"A.Chen"}
+      <div className="mx-auto max-w-5xl flex items-center justify-between px-6 py-4">
+        <a
+          href="#"
+          className="font-mono text-sm tracking-wider text-primary"
+        >
+          {"<CKA />"}
         </a>
 
-        {/* Desktop nav */}
         <ul className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
@@ -34,7 +38,6 @@ export function Navbar() {
           ))}
         </ul>
 
-        {/* Mobile toggle */}
         <button
           className="md:hidden text-muted-foreground hover:text-foreground"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -44,7 +47,6 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* Mobile nav */}
       {mobileOpen && (
         <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-md">
           <ul className="flex flex-col gap-1 p-4">

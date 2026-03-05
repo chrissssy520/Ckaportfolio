@@ -7,8 +7,8 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono" });
 
 export const metadata: Metadata = {
-  title: 'Alex Chen | Data Analyst',
-  description: 'Data analyst specializing in Python, SQL, and Excel. Turning raw data into actionable insights.',
+  title: 'Christian Kho Aler | Aspiring Data Analyst',
+  description: 'IT Graduate and aspiring data analyst skilled in Excel, SQL, Power BI, and AI-assisted workflows. Turning data into decisions.',
   icons: {
     icon: [
       {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#1a2332',
+  themeColor: '#1a1f35',
 }
 
 export default function RootLayout({

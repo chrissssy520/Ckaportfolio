@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, type FormEvent } from "react"
-import { Send, Mail, Linkedin, Github } from "lucide-react"
+import { Send, Mail, Phone, MapPin, ExternalLink } from "lucide-react"
 
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false)
@@ -13,20 +13,20 @@ export function ContactSection() {
 
   return (
     <section id="contact" className="py-24 px-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-16 max-w-xl">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-12">
           <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
-            Contact
+            06. Contact
           </p>
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
             Get in Touch
           </h2>
-          <p className="mt-4 leading-relaxed text-muted-foreground text-pretty">
-            {"Have a project in mind or want to discuss data? I'd love to hear from you."}
+          <p className="mt-4 max-w-lg leading-relaxed text-muted-foreground text-pretty">
+            {"Interested in working together or have a question? I'd love to hear from you."}
           </p>
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-5">
+        <div className="grid gap-10 lg:grid-cols-5">
           {/* Form */}
           <div className="lg:col-span-3">
             {submitted ? (
@@ -38,7 +38,7 @@ export function ContactSection() {
                   Message Sent
                 </h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {"Thanks for reaching out! I'll get back to you within 24 hours."}
+                  {"Thanks for reaching out! I'll get back to you soon."}
                 </p>
                 <button
                   className="mt-6 text-sm text-primary hover:underline"
@@ -128,49 +128,55 @@ export function ContactSection() {
             )}
           </div>
 
-          {/* Info */}
-          <div className="flex flex-col gap-8 lg:col-span-2">
+          {/* Info sidebar */}
+          <div className="flex flex-col gap-6 lg:col-span-2">
             <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-                Direct
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-5">
+                Contact Info
               </h3>
               <div className="flex flex-col gap-4">
                 <a
-                  href="mailto:alex@example.com"
+                  href="mailto:chan.aler02@gmail.com"
                   className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
                     <Mail className="size-4" />
                   </div>
-                  alex@example.com
+                  chan.aler02@gmail.com
                 </a>
+                <a
+                  href="tel:+639694840008"
+                  className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                    <Phone className="size-4" />
+                  </div>
+                  +63 969 484 0008
+                </a>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground">
+                    <MapPin className="size-4" />
+                  </div>
+                  Caloocan City, Manila
+                </div>
               </div>
             </div>
 
             <div className="rounded-lg border border-border bg-card p-6">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-                Profiles
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-5">
+                Online
               </h3>
-              <div className="flex flex-col gap-4">
-                <a
-                  href="#"
-                  className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
-                    <Github className="size-4" />
-                  </div>
-                  github.com/alexchen
-                </a>
-                <a
-                  href="#"
-                  className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
-                    <Linkedin className="size-4" />
-                  </div>
-                  linkedin.com/in/alexchen
-                </a>
-              </div>
+              <a
+                href="https://sites.google.com/view/alerchristian"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                  <ExternalLink className="size-4" />
+                </div>
+                Portfolio (Google Sites)
+              </a>
             </div>
 
             <div className="rounded-lg border border-border bg-card p-6">
@@ -183,7 +189,7 @@ export function ContactSection() {
                   <span className="relative inline-flex size-2.5 rounded-full bg-primary" />
                 </span>
                 <span className="text-sm text-foreground">
-                  Open to new opportunities
+                  Open to opportunities
                 </span>
               </div>
             </div>

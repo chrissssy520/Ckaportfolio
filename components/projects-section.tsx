@@ -1,112 +1,95 @@
 import Image from "next/image"
-import { ExternalLink, Github } from "lucide-react"
-
-const projects = [
-  {
-    title: "Sales Analytics Dashboard",
-    description:
-      "Built an interactive dashboard analyzing $12M in annual revenue across 8 product lines. Identified seasonal patterns that led to a 15% improvement in inventory planning.",
-    image: "/images/project-sales-dashboard.jpg",
-    tags: ["Python", "Tableau", "PostgreSQL", "Pandas"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Customer Churn Prediction",
-    description:
-      "Developed a machine learning model predicting customer churn with 89% accuracy. Enabled the retention team to proactively target at-risk customers, reducing churn by 22%.",
-    image: "/images/project-churn-analysis.jpg",
-    tags: ["Python", "Scikit-learn", "SQL", "Matplotlib"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Supply Chain Optimization",
-    description:
-      "Analyzed logistics data across 200+ warehouses to optimize delivery routes and inventory levels. Reduced shipping costs by 18% and improved on-time delivery rates.",
-    image: "/images/project-supply-chain.jpg",
-    tags: ["SQL", "Excel", "Power BI", "Python"],
-    github: "#",
-    live: "#",
-  },
-]
+import { ExternalLink, Code2 } from "lucide-react"
 
 export function ProjectsSection() {
   return (
     <section id="projects" className="py-24 px-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-16 max-w-xl">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-12">
           <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
-            Projects
+            04. Projects
           </p>
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
-            Selected Work
+            Academic Project
           </h2>
-          <p className="mt-4 leading-relaxed text-muted-foreground text-pretty">
-            A curated selection of data analysis projects demonstrating
-            end-to-end analytical workflows and measurable business impact.
+          <p className="mt-4 max-w-lg leading-relaxed text-muted-foreground text-pretty">
+            A featured project from my undergraduate studies showcasing full-stack development skills.
           </p>
         </div>
 
-        <div className="flex flex-col gap-12">
-          {projects.map((project, index) => (
-            <div
-              key={project.title}
-              className={`group flex flex-col gap-8 rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/40 lg:flex-row lg:p-8 ${
-                index % 2 !== 0 ? "lg:flex-row-reverse" : ""
-              }`}
-            >
-              {/* Image */}
-              <div className="relative aspect-video w-full overflow-hidden rounded-md bg-secondary lg:w-1/2">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="flex flex-1 flex-col justify-center lg:w-1/2">
-                <h3 className="text-xl font-semibold text-foreground lg:text-2xl">
-                  {project.title}
-                </h3>
-                <p className="mt-3 leading-relaxed text-muted-foreground text-pretty">
-                  {project.description}
-                </p>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-md bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-6 flex gap-4">
-                  <a
-                    href={project.github}
-                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                    aria-label={`View ${project.title} source code on GitHub`}
-                  >
-                    <Github className="size-4" />
-                    Source Code
-                  </a>
-                  <a
-                    href={project.live}
-                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                    aria-label={`View ${project.title} live demo`}
-                  >
-                    <ExternalLink className="size-4" />
-                    Live Demo
-                  </a>
-                </div>
-              </div>
+        {/* Featured project card */}
+        <div className="rounded-lg border border-border bg-card overflow-hidden transition-colors hover:border-primary/30">
+          <div className="relative aspect-video w-full overflow-hidden bg-secondary">
+            <Image
+              src="/images/project-hotel-system.jpg"
+              alt="Hotel Reservation System with Virtual Tour"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-background/40" />
+            <div className="absolute top-4 right-4">
+              <span className="rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
+                Lead Programmer
+              </span>
             </div>
-          ))}
+          </div>
+
+          <div className="p-6 lg:p-8">
+            <h3 className="text-xl font-semibold text-foreground lg:text-2xl">
+              Hotel Reservation System with Virtual Tour
+            </h3>
+            <p className="mt-1 text-sm text-primary font-mono">
+              Capstone / Thesis Project
+            </p>
+
+            <p className="mt-4 leading-relaxed text-muted-foreground text-pretty">
+              A full-stack hotel reservation website featuring 360-degree virtual room tours,
+              real-time booking management, secure payment processing, and a comprehensive admin
+              dashboard. Built as a team capstone project where I served as Lead Programmer,
+              handling the core architecture, database design, and front-end implementation.
+            </p>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  label: "Virtual Tours",
+                  detail: "360-degree interactive room previews for guests",
+                },
+                {
+                  label: "Booking Engine",
+                  detail: "Real-time availability and reservation management",
+                },
+                {
+                  label: "Secure Payments",
+                  detail: "Integrated payment gateway with transaction records",
+                },
+                {
+                  label: "Admin Dashboard",
+                  detail: "Complete back-office management and analytics",
+                },
+              ].map((feature) => (
+                <div key={feature.label} className="rounded-md bg-secondary p-3">
+                  <p className="text-sm font-medium text-foreground">
+                    {feature.label}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                    {feature.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-1.5">
+              {["HTML", "CSS", "JavaScript", "PHP", "MySQL"].map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
