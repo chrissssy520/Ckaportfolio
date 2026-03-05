@@ -1,5 +1,3 @@
-"use client"
-
 import {
   FileSpreadsheet,
   Database,
@@ -16,28 +14,28 @@ const skills = [
     name: "Microsoft Excel",
     detail: "Advanced",
     icon: FileSpreadsheet,
-    level: 95,
+    level: 75,
     tags: ["Pivot Tables", "VLOOKUP/XLOOKUP", "Data Modeling", "Macros"],
   },
   {
     name: "Power Query",
     detail: "ETL & Data Cleaning",
     icon: Search,
-    level: 85,
+    level: 70,
     tags: ["Data Transformation", "Merging", "Automation"],
   },
   {
     name: "SQL",
     detail: "Querying & Analysis",
     icon: Database,
-    level: 80,
+    level: 65,
     tags: ["MySQL", "Joins", "Aggregation", "Subqueries"],
   },
   {
     name: "Power BI",
     detail: "Dashboards & DAX",
     icon: BarChart3,
-    level: 75,
+    level: 50,
     tags: ["Visualizations", "DAX (Learning)", "Data Modeling"],
   },
   {
@@ -51,21 +49,21 @@ const skills = [
     name: "Canva & CapCut",
     detail: "Visual Content",
     icon: Palette,
-    level: 90,
+    level: 75,
     tags: ["Graphic Design", "Video Editing", "Social Media"],
   },
   {
     name: "Vibe Coding",
     detail: "Rapid Prototyping",
     icon: Code2,
-    level: 70,
+    level: 65,
     tags: ["AI-Assisted Dev", "Web Prototypes", "No-Code/Low-Code"],
   },
   {
     name: "Photo & Video Editing",
     detail: "Creative Production",
     icon: Scissors,
-    level: 92,
+    level: 80,
     tags: ["Lightroom", "Premiere Pro", "Color Grading"],
   },
 ]
@@ -82,7 +80,8 @@ export function SkillsSection() {
             Tools & Technologies
           </h2>
           <p className="mt-4 max-w-lg leading-relaxed text-muted-foreground text-pretty">
-            My core toolkit for data analysis, visualization, and creative content production.
+            My core toolkit for data analysis, visualization, and creative
+            content production.
           </p>
         </div>
 
@@ -92,37 +91,34 @@ export function SkillsSection() {
               key={skill.name}
               className="group relative rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
                   <skill.icon className="size-4" />
                 </div>
                 <div className="min-w-0">
                   <h3 className="text-sm font-semibold text-foreground leading-tight">
                     {skill.name}
                   </h3>
-                  <p className="text-xs text-muted-foreground">{skill.detail}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {skill.detail}
+                  </p>
                 </div>
               </div>
 
-              {/* Proficiency bar */}
-              <div className="mb-3">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[11px] text-muted-foreground">Proficiency</span>
-                  <span className="text-[11px] font-mono text-primary">{skill.level}%</span>
-                </div>
-                <div className="h-1 w-full rounded-full bg-secondary">
-                  <div
-                    className="h-1 rounded-full bg-primary transition-all duration-700"
-                    style={{ width: `${skill.level}%` }}
-                  />
-                </div>
+              <div className="mb-3 flex items-center gap-2">
+                <span className="rounded-full bg-primary/15 px-2.5 py-0.5 text-xs font-medium text-primary">
+                  {skill.level}%
+                </span>
+                <span className="text-[11px] text-muted-foreground">
+                  proficiency
+                </span>
               </div>
 
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-1.5">
                 {skill.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded bg-secondary px-1.5 py-0.5 text-[10px] text-muted-foreground"
+                    className="rounded-md border border-border bg-secondary/50 px-2 py-0.5 text-[11px] text-muted-foreground transition-colors group-hover:border-primary/20 group-hover:text-secondary-foreground"
                   >
                     {tag}
                   </span>
