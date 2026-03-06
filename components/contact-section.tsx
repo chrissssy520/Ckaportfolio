@@ -167,7 +167,7 @@ export function ContactSection() {
                 Online
               </h3>
               <a
-                href="https://sites.google.com/view/alerchristian"
+                href="https://facebook.com/chanaler02"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -175,9 +175,44 @@ export function ContactSection() {
                 <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
                   <ExternalLink className="size-4" />
                 </div>
-                Portfolio (Google Sites)
+                Facebook
+              </a>
+                   <a
+                href="https://github.com/chrissssy520"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                  <ExternalLink className="size-4" />
+                </div>
+                GitHub 
+              </a>
+                  <a
+                href="ph.jobstreet.com/profiles/christian-aler-BPXw858YsC"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                  <ExternalLink className="size-4" />
+                </div>
+                Jobstreet
+              </a>
+                   <a
+                href="https://www.linkedin.com/in/christian-aler-16467131a/?locale=en"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                  <ExternalLink className="size-4" />
+                </div>
+                LinkedIn
               </a>
             </div>
+            
+            
 
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
