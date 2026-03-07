@@ -1,10 +1,17 @@
+"use client"
+
+import { useScrollReveal } from "@/hooks/useScrollReveal"
 import { GraduationCap, Award } from "lucide-react"
 
 export function EducationSection() {
+  const refHeading = useScrollReveal(0)
+  const refCard1 = useScrollReveal(150)
+  const refCard2 = useScrollReveal(300)
+
   return (
     <section id="education" className="py-24 px-6">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-12">
+        <div ref={refHeading} className="reveal mb-12">
           <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
             05. Education
           </p>
@@ -15,7 +22,7 @@ export function EducationSection() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Education card */}
-          <div className="rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/30">
+          <div ref={refCard1} className="reveal rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/30">
             <div className="flex items-start gap-4">
               <div className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
                 <GraduationCap className="size-5" />
@@ -38,7 +45,7 @@ export function EducationSection() {
           </div>
 
           {/* Certification card */}
-          <div className="rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/30">
+          <div ref={refCard2} className="reveal rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/30">
             <div className="flex items-start gap-4">
               <div className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
                 <Award className="size-5" />

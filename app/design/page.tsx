@@ -1,13 +1,22 @@
+"use client"
+
+import { useScrollReveal } from "@/hooks/useScrollReveal"
 import { Navbar } from "@/components/navbar"
 
 export default function DesignPage() {
+  const refHeading = useScrollReveal(0)
+  const refCard1 = useScrollReveal(0)
+  const refCard2 = useScrollReveal(150)
+  const refCard3 = useScrollReveal(300)
+  const refCard4 = useScrollReveal(450)
+  const refCard5 = useScrollReveal(600)
+  const refCard6 = useScrollReveal(750)
+
   return (
     <>
       <Navbar />
 
       <main className="relative min-h-screen px-6 py-24">
-
-        {/* Background - purple/creative vibe */}
         <div
           className="absolute inset-0 -z-10"
           style={{
@@ -20,17 +29,18 @@ export default function DesignPage() {
         />
 
         <div className="mx-auto max-w-5xl">
-          <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
-            Projects
-          </p>
-          <h1 className="mb-12 text-3xl font-bold tracking-tight sm:text-4xl">
-            Design Projects
-          </h1>
+          <div ref={refHeading} className="reveal">
+            <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
+              Projects
+            </p>
+            <h1 className="mb-12 text-3xl font-bold tracking-tight sm:text-4xl">
+              Design Projects
+            </h1>
+          </div>
 
           <div className="flex flex-col gap-10">
 
-            {/* Cars */}
-            <div className="overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            <div ref={refCard1} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <h3 className="text-xl font-semibold lg:text-2xl">Car Ads</h3>
                 <p className="mt-1 font-mono text-sm text-primary">Product Advertisement</p>
@@ -44,8 +54,8 @@ export default function DesignPage() {
                 </div>
               </div>
             </div>
-                {/* F1 */}
-            <div className="overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+
+            <div ref={refCard2} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <h3 className="text-xl font-semibold lg:text-2xl">F1 Designs</h3>
                 <p className="mt-1 font-mono text-sm text-primary">Sports Graphic Design</p>
@@ -59,8 +69,8 @@ export default function DesignPage() {
                 </div>
               </div>
             </div>
-            {/* Phones */}
-            <div className="overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+
+            <div ref={refCard3} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <h3 className="text-xl font-semibold lg:text-2xl">Phone Ads</h3>
                 <p className="mt-1 font-mono text-sm text-primary">Product Advertisement</p>
@@ -75,8 +85,7 @@ export default function DesignPage() {
               </div>
             </div>
 
-            {/* Gadgets */}
-            <div className="overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            <div ref={refCard4} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <h3 className="text-xl font-semibold lg:text-2xl">Gadget Ads</h3>
                 <p className="mt-1 font-mono text-sm text-primary">Product Advertisement</p>
@@ -91,9 +100,7 @@ export default function DesignPage() {
               </div>
             </div>
 
-
-            {/* Drinks */}
-            <div className="overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            <div ref={refCard5} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <h3 className="text-xl font-semibold lg:text-2xl">Drink Ads</h3>
                 <p className="mt-1 font-mono text-sm text-primary">Product Advertisement</p>
@@ -108,8 +115,7 @@ export default function DesignPage() {
               </div>
             </div>
 
-            {/* Shoes */}
-            <div className="overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            <div ref={refCard6} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <h3 className="text-xl font-semibold lg:text-2xl">Shoes Ads</h3>
                 <p className="mt-1 font-mono text-sm text-primary">Product Advertisement</p>
@@ -123,8 +129,6 @@ export default function DesignPage() {
                 </div>
               </div>
             </div>
-
-        
 
           </div>
         </div>

@@ -11,22 +11,7 @@ export function Footer() {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <a
-            href="mailto:chan.aler02@gmail.com"
-            className="text-muted-foreground hover:text-primary transition-colors"
-            aria-label="Email"
-          >
-            <Mail className="size-4" />
-          </a>
-          <a
-            href="https://sites.google.com/view/alerchristian"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary transition-colors"
-            aria-label="Portfolio"
-          >
-            <ExternalLink className="size-4" />
-          </a>
+        
         </div>
       </div>
     </footer>

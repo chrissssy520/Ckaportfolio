@@ -1,3 +1,6 @@
+"use client"
+
+import { useScrollReveal } from "@/hooks/useScrollReveal"
 import {
   FileSpreadsheet,
   Database,
@@ -83,10 +86,23 @@ const skills = [
 ]
 
 export function SkillsSection() {
+  const refHeading = useScrollReveal(0)
+  const refCard1 = useScrollReveal(0)
+  const refCard2 = useScrollReveal(75)
+  const refCard3 = useScrollReveal(150)
+  const refCard4 = useScrollReveal(225)
+  const refCard5 = useScrollReveal(300)
+  const refCard6 = useScrollReveal(375)
+  const refCard7 = useScrollReveal(450)
+  const refCard8 = useScrollReveal(525)
+  const refCard9 = useScrollReveal(600)
+
+  const cardRefs = [refCard1, refCard2, refCard3, refCard4, refCard5, refCard6, refCard7, refCard8, refCard9]
+
   return (
     <section id="skills" className="py-24 px-6">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-12">
+        <div ref={refHeading} className="reveal mb-12">
           <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
             02. Skills
           </p>
@@ -100,10 +116,11 @@ export function SkillsSection() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {skills.map((skill) => (
+          {skills.map((skill, index) => (
             <div
               key={skill.name}
-              className="group relative rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
+              ref={cardRefs[index]}
+              className="reveal group relative rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">

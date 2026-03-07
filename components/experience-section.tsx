@@ -1,3 +1,6 @@
+"use client"
+
+import { useScrollReveal } from "@/hooks/useScrollReveal"
 import { Briefcase, Cloud, ShoppingBag, Camera } from "lucide-react"
 
 const experiences = [
@@ -31,10 +34,17 @@ const experiences = [
 ]
 
 export function ExperienceSection() {
+  const refHeading = useScrollReveal(0)
+  const refCard1 = useScrollReveal(0)
+  const refCard2 = useScrollReveal(150)
+  const refCard3 = useScrollReveal(300)
+
+  const cardRefs = [refCard1, refCard2, refCard3]
+
   return (
     <section id="experience" className="py-24 px-6">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-12">
+        <div ref={refHeading} className="reveal mb-12">
           <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
             03. Experience
           </p>
@@ -49,8 +59,8 @@ export function ExperienceSection() {
           <div className="absolute left-[19px] top-2 bottom-2 hidden w-px bg-border md:block" />
 
           <div className="flex flex-col gap-10">
-            {experiences.map((exp) => (
-              <div key={exp.role} className="group relative flex gap-6">
+            {experiences.map((exp, index) => (
+              <div key={exp.role} ref={cardRefs[index]} className="reveal group relative flex gap-6">
                 {/* Timeline dot */}
                 <div className="hidden md:flex flex-col items-center">
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-card text-primary group-hover:border-primary/50 transition-colors">
@@ -92,4 +102,4 @@ export function ExperienceSection() {
       </div>
     </section>
   )
-}
+} 

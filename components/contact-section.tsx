@@ -1,10 +1,14 @@
 "use client"
 
+import { useScrollReveal } from "@/hooks/useScrollReveal"
 import { useState, type FormEvent } from "react"
 import { Send, Mail, Phone, MapPin, ExternalLink } from "lucide-react"
 
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false)
+  const refHeading = useScrollReveal(0)
+  const refForm = useScrollReveal(150)
+  const refSidebar = useScrollReveal(300)
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -14,7 +18,7 @@ export function ContactSection() {
   return (
     <section id="contact" className="py-24 px-6">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-12">
+        <div ref={refHeading} className="reveal mb-12">
           <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
             06. Contact
           </p>
@@ -28,7 +32,7 @@ export function ContactSection() {
 
         <div className="grid gap-10 lg:grid-cols-5">
           {/* Form */}
-          <div className="lg:col-span-3">
+          <div ref={refForm} className="reveal lg:col-span-3">
             {submitted ? (
               <div className="flex flex-col items-center justify-center rounded-lg border border-primary/30 bg-card p-12 text-center">
                 <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
@@ -54,10 +58,7 @@ export function ContactSection() {
               >
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <label
-                      htmlFor="name"
-                      className="text-sm font-medium text-foreground"
-                    >
+                    <label htmlFor="name" className="text-sm font-medium text-foreground">
                       Name
                     </label>
                     <input
@@ -69,10 +70,7 @@ export function ContactSection() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label
-                      htmlFor="email"
-                      className="text-sm font-medium text-foreground"
-                    >
+                    <label htmlFor="email" className="text-sm font-medium text-foreground">
                       Email
                     </label>
                     <input
@@ -86,10 +84,7 @@ export function ContactSection() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="subject"
-                    className="text-sm font-medium text-foreground"
-                  >
+                  <label htmlFor="subject" className="text-sm font-medium text-foreground">
                     Subject
                   </label>
                   <input
@@ -102,10 +97,7 @@ export function ContactSection() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="message"
-                    className="text-sm font-medium text-foreground"
-                  >
+                  <label htmlFor="message" className="text-sm font-medium text-foreground">
                     Message
                   </label>
                   <textarea
@@ -129,25 +121,19 @@ export function ContactSection() {
           </div>
 
           {/* Info sidebar */}
-          <div className="flex flex-col gap-6 lg:col-span-2">
+          <div ref={refSidebar} className="reveal flex flex-col gap-6 lg:col-span-2">
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-5">
                 Contact Info
               </h3>
               <div className="flex flex-col gap-4">
-                <a
-                  href="mailto:chan.aler02@gmail.com"
-                  className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
+                <a href="mailto:chan.aler02@gmail.com" className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
                   <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
                     <Mail className="size-4" />
                   </div>
                   chan.aler02@gmail.com
                 </a>
-                <a
-                  href="tel:+639694840008"
-                  className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
+                <a href="tel:+639694840008" className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
                   <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
                     <Phone className="size-4" />
                   </div>
@@ -166,53 +152,33 @@ export function ContactSection() {
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-5">
                 Online
               </h3>
-              <a
-                href="https://facebook.com/chanaler02"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
-                  <ExternalLink className="size-4" />
-                </div>
-                Facebook
-              </a>
-                   <a
-                href="https://github.com/chrissssy520"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
-                  <ExternalLink className="size-4" />
-                </div>
-                GitHub 
-              </a>
-                  <a
-                href="ph.jobstreet.com/profiles/christian-aler-BPXw858YsC"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
-                  <ExternalLink className="size-4" />
-                </div>
-                Jobstreet
-              </a>
-                   <a
-                href="https://www.linkedin.com/in/christian-aler-16467131a/?locale=en"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
-                  <ExternalLink className="size-4" />
-                </div>
-                LinkedIn
-              </a>
+              <div className="flex flex-col gap-3">
+                <a href="https://facebook.com/chanaler02" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                    <ExternalLink className="size-4" />
+                  </div>
+                  Facebook
+                </a>
+                <a href="https://github.com/chrissssy520" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                    <ExternalLink className="size-4" />
+                  </div>
+                  GitHub
+                </a>
+                <a href="https://ph.jobstreet.com/profiles/christian-aler-BPXw858YsC" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                    <ExternalLink className="size-4" />
+                  </div>
+                  Jobstreet
+                </a>
+                <a href="https://www.linkedin.com/in/christian-aler-16467131a/?locale=en" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <div className="flex size-9 items-center justify-center rounded-md bg-secondary text-muted-foreground group-hover:text-primary transition-colors">
+                    <ExternalLink className="size-4" />
+                  </div>
+                  LinkedIn
+                </a>
+              </div>
             </div>
-            
-            
 
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
@@ -223,9 +189,7 @@ export function ContactSection() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
                   <span className="relative inline-flex size-2.5 rounded-full bg-primary" />
                 </span>
-                <span className="text-sm text-foreground">
-                  Open to opportunities
-                </span>
+                <span className="text-sm text-foreground">Open to opportunities</span>
               </div>
             </div>
           </div>

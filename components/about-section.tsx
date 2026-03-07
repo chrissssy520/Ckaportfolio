@@ -1,8 +1,17 @@
+"use client"
+
+import { useScrollReveal } from "@/hooks/useScrollReveal"
+
 export function AboutSection() {
+  const refHeading = useScrollReveal(0)
+  const refText = useScrollReveal(150)
+  const refCard = useScrollReveal(300)
+
   return (
     <section id="about" className="py-24 px-6">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-12">
+
+        <div ref={refHeading} className="reveal mb-12">
           <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
             01. About
           </p>
@@ -12,7 +21,7 @@ export function AboutSection() {
         </div>
 
         <div className="grid gap-10 lg:grid-cols-5">
-          <div className="lg:col-span-3 flex flex-col gap-5 text-muted-foreground leading-relaxed">
+          <div ref={refText} className="reveal lg:col-span-3 flex flex-col gap-5 text-muted-foreground leading-relaxed">
             <p>
               {"I'm an IT graduate from STI College Novaliches with a strong interest in data analytics, business intelligence, and making sense of complex datasets. My goal is to help organizations make smarter, data-driven decisions."}
             </p>
@@ -24,7 +33,7 @@ export function AboutSection() {
             </p>
           </div>
 
-          <div className="lg:col-span-2">
+          <div ref={refCard} className="reveal lg:col-span-2">
             <div className="rounded-lg border border-border bg-card p-6">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-5">
                 Quick Facts
@@ -48,6 +57,7 @@ export function AboutSection() {
             </div>
           </div>
         </div>
+
       </div>
     </section>
   )
