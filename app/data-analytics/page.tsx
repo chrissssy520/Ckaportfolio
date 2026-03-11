@@ -10,6 +10,7 @@ export default function DataAnalyticsPage() {
   const refCard3 = useScrollReveal(300)
   const refCard4 = useScrollReveal(450)
   const refCard5 = useScrollReveal(600)
+  const refCard6 = useScrollReveal(750)
 
   return (
     <>
@@ -34,28 +35,72 @@ export default function DataAnalyticsPage() {
             </h1>
           </div>
 
-          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8">
 
-            <div ref={refCard1} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
-              <div className="p-6 lg:p-8">
-                <div className="grid gap-6 lg:grid-cols-2">
-                  <img src="/images/DA1.JPG" alt="McDonald's Sales Dashboard" className="w-full rounded-lg object-cover h-52" />
-                  <div className="flex flex-col justify-center">
-                    <h3 className="text-xl font-semibold lg:text-2xl">McDonald's Sales Dashboard 2022</h3>
-                    <p className="mt-1 font-mono text-sm text-primary">Sales & Performance Analysis</p>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      An interactive sales dashboard analyzing McDonald's 2022 performance across South America. Features KPI cards for sales, profit, and customer count, a monthly trend line chart, and a customer satisfaction radar chart.
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {["Power BI", "Power Query", "DAX", "Excel"].map((tag) => (
-                        <span key={tag} className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  {/* NEW: Philippine Sales Data Analysis - FIRST */}
+  <div ref={refCard6} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+    <div className="p-6 lg:p-8">
 
+      <h3 className="text-xl font-semibold lg:text-2xl">
+        Philippine Sales Data Analysis
+      </h3>
+
+   <div className="mt-1 flex items-center gap-3">
+  <p className="font-mono text-sm text-primary">
+    Real-World Data Cleaning & Dashboard Analysis
+  </p>
+  
+    <a href="/Sales1cka.xlsx"
+    download="Philippine_Sales_Analysis_CKA.xlsx"
+    className="inline-flex items-center gap-1.5 rounded bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
+  >
+    ⬇ Download Project
+  </a>
+</div>
+
+      <div className="mt-4 mb-4 grid grid-cols-3 gap-2">
+        {["Sales1.png", "Sales2.png", "Sales3.png"].map((img) => (
+          <img
+            key={img}
+            src={`/images/${img}`}
+            alt={`Sales project screenshot ${img}`}
+            className="h-44 w-full rounded-lg object-cover"
+          />
+        ))}
+      </div>
+
+      <p className="mt-4 leading-relaxed text-muted-foreground">
+        A complete end-to-end data analytics project using a real-world messy Philippine sales dataset.
+        Raw data containing inconsistent date formats, mixed letter casing, duplicate columns, and null values
+        was cleaned using Power Query. Pivot Tables were then used to analyze product profitability,
+        category performance, discount impact, delivery time, and top sales agents — with KPI cards
+        linked via slicer for interactive regional filtering.
+      </p>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[
+          { label: "💰 Total Sales", detail: "₱1,118,705 across all regions — Laptop is the top product at ₱291,600" },
+          { label: "📦 Top Category", detail: "Electronics leads with 36 units sold and ₱604,600 in profit" },
+          { label: "🏷️ Discount Impact", detail: "Clothing has the highest discount (12.78%) yet lowest profit — over-discounting hurts margins" },
+          { label: "🚚 Delivery", detail: "Average delivery time is 6 days across all regions" },
+          { label: "👤 Top Agent", detail: "Juan Dela Cruz leads sales with ₱429,300 in total revenue" },
+          { label: "💳 Payment", detail: "Cash is the most popular payment method among customers" },
+        ].map((item) => (
+          <div key={item.label} className="rounded-md bg-secondary p-3">
+            <p className="text-sm font-medium">{item.label}</p>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.detail}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-1.5">
+        {["Excel", "Power Query", "Pivot Table", "Data Cleaning", "KPI Dashboard"].map((tag) => (
+          <span key={tag} className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{tag}</span>
+        ))}
+      </div>
+
+    </div>
+  </div>
             <div ref={refCard2} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
@@ -135,6 +180,7 @@ export default function DataAnalyticsPage() {
                 </div>
               </div>
             </div>
+
 
           </div>
         </div>
