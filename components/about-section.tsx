@@ -1,11 +1,14 @@
 "use client"
 
+import { useState } from "react"
 import { useScrollReveal } from "@/hooks/useScrollReveal"
+import Image from "next/image"
 
 export function AboutSection() {
   const refHeading = useScrollReveal(0)
   const refText = useScrollReveal(150)
   const refCard = useScrollReveal(300)
+  const [showCert, setShowCert] = useState(false)
 
   return (
     <section id="about" className="py-24 px-6">
@@ -54,11 +57,51 @@ export function AboutSection() {
                   </div>
                 ))}
               </dl>
+
+              {/* View Certificate Button */}
+              <button
+                onClick={() => setShowCert(true)}
+                className="mt-6 w-full rounded-md border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
+              >
+                View Certificate
+              </button>
             </div>
           </div>
         </div>
 
       </div>
+
+      {/* Certificate Modal */}
+      {showCert && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          onClick={() => setShowCert(false)}
+        >
+          <div
+            className="relative max-w-2xl w-full rounded-xl overflow-hidden shadow-2xl bg-white"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowCert(false)}
+              className="absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+
+            {/* Certificate Image */}
+            <Image
+              src="/images/cert.JPG"
+              alt="Huawei HCIA Cloud Computing Certificate"
+              width={800}
+              height={600}
+              className="w-full h-auto object-contain"
+              priority
+            />
+          </div>
+        </div>
+      )}
     </section>
   )
 }
