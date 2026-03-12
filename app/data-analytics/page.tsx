@@ -197,7 +197,6 @@ function SqlModal({ project, onClose }: { project: typeof sqlProjects[0]; onClos
         className="relative w-full max-w-3xl max-h-[85vh] flex flex-col rounded-xl border border-primary/30 bg-[#0d1117] shadow-2xl shadow-primary/10"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <div>
             <h3 className="font-semibold text-foreground">{project.title}</h3>
@@ -222,11 +221,9 @@ function SqlModal({ project, onClose }: { project: typeof sqlProjects[0]; onClos
           </div>
         </div>
 
-        {/* Code Block */}
         <div className="overflow-y-auto flex-1 p-6">
           <pre className="text-sm leading-relaxed font-mono text-gray-300 whitespace-pre-wrap">
             {project.code.split("\n").map((line, i) => {
-              // Comment lines
               if (line.trim().startsWith("--")) {
                 const isSection = line.includes("────") || line.includes("====")
                 const isEmoji = /[🟢🟡🔴⭐]/.test(line)
@@ -236,14 +233,10 @@ function SqlModal({ project, onClose }: { project: typeof sqlProjects[0]; onClos
                   </span>
                 )
               }
-              // Keywords
               const keywords = ["SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "HAVING", "JOIN", "ON", "WITH", "AS", "LIMIT", "OVER", "PARTITION BY", "RANK", "SUM", "COUNT", "AVG", "MAX", "MIN", "ROUND", "LAG", "LEAD", "DISTINCT", "AND", "OR", "NOT", "IN", "NULL", "DESC", "ASC"]
               let highlighted = line
               keywords.forEach((kw) => {
-                highlighted = highlighted.replace(
-                  new RegExp(`\\b${kw}\\b`, "g"),
-                  `__KW__${kw}__/KW__`
-                )
+                highlighted = highlighted.replace(new RegExp(`\\b${kw}\\b`, "g"), `__KW__${kw}__/KW__`)
               })
               const parts = highlighted.split(/(__KW__|__\/KW__)/)
               let inKw = false
@@ -276,8 +269,7 @@ function SqlSection() {
   const refs = [ref1, ref2, ref3]
 
   return (
-    <div className="mt-16">
-      {/* Section Header */}
+    <div className="mb-16">
       <div className="mb-8">
         <p className="font-mono text-sm tracking-widest uppercase text-primary mb-1">SQL</p>
         <h2 className="text-2xl font-bold tracking-tight">SQL Query Projects</h2>
@@ -286,7 +278,6 @@ function SqlSection() {
         </p>
       </div>
 
-      {/* Cards Grid */}
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {sqlProjects.map((project, i) => (
           <div
@@ -294,7 +285,6 @@ function SqlSection() {
             ref={refs[i]}
             className="reveal flex flex-col rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 p-5"
           >
-            {/* Card Header */}
             <div className="flex items-start justify-between gap-2">
               <div>
                 <h3 className="font-semibold text-foreground leading-snug">{project.title}</h3>
@@ -307,12 +297,10 @@ function SqlSection() {
               )}
             </div>
 
-            {/* Description */}
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground flex-1">
               {project.description}
             </p>
 
-            {/* Tags */}
             <div className="mt-4 flex flex-wrap gap-1.5">
               {project.tags.map((tag) => (
                 <span key={tag} className="rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
@@ -321,13 +309,12 @@ function SqlSection() {
               ))}
             </div>
 
-            {/* Buttons */}
             <div className="mt-5 flex items-center gap-2">
               <button
                 onClick={() => setActiveModal(project)}
                 className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
-                {"</>"}  View Code
+                {"</>"} View Code
               </button>
               <a
                 href={project.githubUrl}
@@ -343,7 +330,6 @@ function SqlSection() {
         ))}
       </div>
 
-      {/* Modal */}
       {activeModal && (
         <SqlModal project={activeModal} onClose={() => setActiveModal(null)} />
       )}
@@ -355,7 +341,6 @@ function SqlSection() {
 
 export default function DataAnalyticsPage() {
   const refHeading = useScrollReveal(0)
-  const refCard1 = useScrollReveal(0)
   const refCard2 = useScrollReveal(150)
   const refCard3 = useScrollReveal(300)
   const refCard4 = useScrollReveal(450)
@@ -376,6 +361,8 @@ export default function DataAnalyticsPage() {
         />
 
         <div className="mx-auto max-w-5xl">
+
+          {/* Page Heading */}
           <div ref={refHeading} className="reveal">
             <p className="mb-2 font-mono text-sm tracking-widest uppercase text-primary">
               Projects
@@ -384,25 +371,30 @@ export default function DataAnalyticsPage() {
               Data Analytics Projects
             </h1>
           </div>
-    {/* ─── SQL SECTION ─── */}
+
+          {/* ─── SQL SECTION — TOP ─── */}
           <SqlSection />
 
+          {/* ─── OTHER PROJECTS ─── */}
           <div className="flex flex-col gap-8">
 
             {/* Philippine Sales Data Analysis */}
             <div ref={refCard6} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <h3 className="text-xl font-semibold lg:text-2xl">Philippine Sales Data Analysis</h3>
-                <div className="mt-1 flex items-center gap-3">
+
+                {/* Updated: subtitle + big teal Download button on right */}
+                <div className="mt-2 flex items-center justify-between gap-4">
                   <p className="font-mono text-sm text-primary">Real-World Data Cleaning & Dashboard Analysis</p>
                   <a
                     href="/Sales1cka.xlsx"
                     download="Philippine_Sales_Analysis_CKA.xlsx"
-                    className="inline-flex items-center gap-1.5 rounded bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
+                    className="shrink-0 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
                   >
                     ⬇ Download Project
                   </a>
                 </div>
+
                 <div className="mt-4 mb-4 grid grid-cols-3 gap-2">
                   {["Sales1.png", "Sales2.png", "Sales3.png"].map((img) => (
                     <img key={img} src={`/images/${img}`} alt={`Sales project screenshot ${img}`} className="h-44 w-full rounded-lg object-cover" />
@@ -511,8 +503,6 @@ export default function DataAnalyticsPage() {
             </div>
 
           </div>
-
-      
         </div>
       </main>
     </>
