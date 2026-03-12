@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowDown, MapPin } from "lucide-react"
+import { ArrowDown, MapPin, Github } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useScrollReveal } from "@/hooks/useScrollReveal"
@@ -92,12 +92,7 @@ export function HeroSection() {
           {/* BUTTONS */}
           <div className="mt-10 flex flex-wrap items-center gap-4">
 
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              Get in touch
-            </a>
+       
 
             <a
               href="/AlerResumePDF.pdf"
@@ -108,6 +103,22 @@ export function HeroSection() {
             >
               <ArrowDown className="size-4" />
               Download CV
+            </a>
+
+            <a
+              href="https://github.com/chrissssy520"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-md border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              <Github className="size-4" />
+              GitHub
+            </a>
+                 <a
+              href="#contact"
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              Get in touch
             </a>
 
           </div>
