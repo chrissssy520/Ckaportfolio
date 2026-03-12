@@ -20,6 +20,14 @@ function getSkillLabel(level: number): string {
 }
 
 const skills = [
+    {
+    name: "Microsoft Suite",
+    detail: "Productivity Tools",
+    icon: MonitorSmartphone,
+    level: 75,
+    tags: ["Word", "PowerPoint", "Outlook", "Teams"],
+  },
+  
   {
     name: "Microsoft Excel",
     detail: "Advanced",
@@ -42,19 +50,13 @@ const skills = [
     tags: ["MySQL", "Joins", "Aggregation", "Subqueries"],
   },
   {
-    name: "Power BI",
+    name: "Power BI/Tableau",
     detail: "Currently Learning",
     icon: BarChart3,
-    level: 30,
+    level: 60,
     tags: ["Visualizations", "DAX (Learning)", "Data Modeling"],
   },
-  {
-    name: "AI-Assisted Workflows",
-    detail: "Productivity",
-    icon: BrainCircuit,
-    level: 80,
-    tags: ["Prompt Engineering", "Automation", "ChatGPT / Copilot"],
-  },
+ 
   {
     name: "Canva & CapCut",
     detail: "Visual Content",
@@ -67,7 +69,7 @@ const skills = [
     detail: "Rapid Prototyping",
     icon: Code2,
     level: 65,
-    tags: ["AI-Assisted Dev", "Web Prototypes", "No-Code/Low-Code"],
+    tags: ["AI-Assisted Dev", "Web Prototypes"],
   },
   {
     name: "English Language",
@@ -76,13 +78,7 @@ const skills = [
     level: 70,
     tags: ["Written", "Verbal", "Technical Writing"],
   },
-  {
-    name: "Microsoft Suite",
-    detail: "Productivity Tools",
-    icon: MonitorSmartphone,
-    level: 75,
-    tags: ["Word", "PowerPoint", "Outlook", "Teams"],
-  },
+
 ]
 
 export function SkillsSection() {
