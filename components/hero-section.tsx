@@ -95,8 +95,8 @@ export function HeroSection() {
        
 
             <a
-              href="/AlerResumePDF.pdf"
-              download="AlerResumePDF.pdf"
+              href="/ChristianAlerResumePDF.pdf"
+              download="ChristianAlerResumePDFpdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-md border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
