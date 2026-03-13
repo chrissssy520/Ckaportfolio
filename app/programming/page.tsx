@@ -190,7 +190,11 @@ export default function ProgrammingPage() {
                 </p>
 
                 <img
-                  src="/images/project-hotel-system.jpg"
+                  src="/images/thesis.png"
+                  alt="Hotel Reservation System"
+                  className="mt-4 mb-4 h-[480px] w-full rounded-lg object-cover"
+                />  <img
+                  src="/images/thesis1.png"
                   alt="Hotel Reservation System"
                   className="mt-4 mb-4 h-[480px] w-full rounded-lg object-cover"
                 />
