@@ -229,7 +229,7 @@ ORDER BY Financial_year, Region;`,
       "HR analytics on a 500-row employee dataset covering salary benchmarking, absence tracking, promotion rates, tenure, gender distribution, and a data quality fix using UPDATE with CASE WHEN.",
     tags: ["MySQL", "Window Functions", "CTEs", "DENSE_RANK()", "UPDATE"],
     score: null,
-    githubUrl: "https://github.com/chrissssy520/hr-employee-analysis",
+    githubUrl: "https://github.com/chrissssy520/HR-analysis-SQL",
     code: `-- ============================================
 -- HR Employee Data Analysis
 -- Author: Christian Kho Aler
