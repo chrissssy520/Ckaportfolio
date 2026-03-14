@@ -9,6 +9,270 @@ import { X, Github } from "lucide-react"
 
 const sqlProjects = [
   {
+    id: 4,
+    title: "Car Rental Analysis",
+    subtitle: "CTEs · Window Functions · Running Total",
+    description:
+      "15 SQL queries on a Philippine-based car and motorcycle rental dataset. Covers profitability ranking, most rented vehicles, color preference with percentage rate, monthly running total, and vehicle type breakdown.",
+    tags: ["MySQL", "CTEs", "DENSE_RANK()", "Running Total", "Window Functions"],
+    score: null,
+    githubUrl: "https://github.com/chrissssy520/Car-Rental-Analysis-SQL",
+    code: `-- CAR RENTAL SQL ANALYSIS by Christian Kho Aler
+
+-- Top 10 profitable vehicle
+WITH rank_car AS (
+SELECT
+    c.make, c.model,
+    SUM(r.total_amount) as total_profit,
+    DENSE_RANK() OVER(ORDER BY SUM(r.total_amount) DESC) as rnk
+    FROM cars c JOIN rentals r ON r.car_id = c.car_id
+    WHERE r.payment_status = "Paid"
+    GROUP BY c.make, c.model
+)
+SELECT * FROM rank_car WHERE rnk <= 10;
+
+-- Top 10 least profitable vehicle
+WITH rank_car AS (
+SELECT
+    c.make, c.model,
+    SUM(r.total_amount) as total_profit,
+    DENSE_RANK() OVER(ORDER BY SUM(r.total_amount) ASC) as rnk
+    FROM cars c JOIN rentals r ON r.car_id = c.car_id
+    WHERE r.payment_status = "Paid"
+    GROUP BY c.make, c.model
+)
+SELECT * FROM rank_car WHERE rnk <= 10;
+
+-- Most Rented Vehicle
+WITH rank_car AS (
+SELECT
+    c.make, c.model,
+    COUNT(*) as total_rent,
+    DENSE_RANK() OVER(ORDER BY COUNT(*) DESC) as rnk
+    FROM cars c JOIN rentals r ON r.car_id = c.car_id
+    WHERE r.payment_status = "Paid"
+    GROUP BY c.make, c.model
+)
+SELECT * FROM rank_car WHERE rnk <= 10;
+
+-- Vehicle type Total Rent
+SELECT c.vehicle_type, COUNT(*) as total_type
+    FROM cars c JOIN rentals r ON c.car_id = r.car_id
+    GROUP BY c.vehicle_type;
+
+-- Average rental days per vehicle
+SELECT c.make, c.model,
+    ROUND(AVG(rental_days),2) as avg_rental_days
+    FROM cars c JOIN rentals r ON c.car_id = r.car_id
+    GROUP BY c.make, c.model
+    ORDER BY avg_rental_days DESC;
+
+-- Customers who rent multiple times
+SELECT customer_name, COUNT(*) as total_rent
+    FROM rentals
+    GROUP BY customer_name
+    HAVING total_rent > 1
+    ORDER BY total_rent DESC;
+
+-- Color preference per model with percentage rate
+SELECT c.make, c.model, c.color,
+    COUNT(color) as total_colors,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM rentals r),2) as percent_rate
+    FROM cars c JOIN rentals r ON c.car_id = r.car_id
+    GROUP BY c.make, c.model, c.color
+    ORDER BY total_colors DESC;
+
+-- Top 3 Color preference with percentage rate
+SELECT c.color, COUNT(*) as total_color,
+    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM rentals r),2) as percentage_rate
+    FROM cars c JOIN rentals r ON c.car_id = r.car_id
+    GROUP BY c.color
+    ORDER BY total_color DESC LIMIT 3;
+
+-- Profit Running total per year
+SELECT
+    YEAR(end_date) AS year_profit,
+    MONTH(end_date) AS monthly_profit,
+    SUM(total_amount) AS monthly_total,
+    SUM(SUM(total_amount)) OVER (
+        PARTITION BY YEAR(end_date)
+        ORDER BY MONTH(end_date)
+    ) AS running_total
+FROM rentals
+WHERE payment_status = "Paid"
+GROUP BY year_profit, monthly_profit
+ORDER BY year_profit, monthly_profit;`,
+  },
+  {
+    id: 5,
+    title: "Grocery Sales Analysis",
+    subtitle: "CTEs · RANK() · Percentage Calculations",
+    description:
+      "13 SQL queries on a Philippine supermarket dataset covering branch performance, product profitability, color preferences, payment method breakdown, gender analysis, and most profitable product per branch using PARTITION BY.",
+    tags: ["MySQL", "CTEs", "RANK()", "PARTITION BY", "Window Functions"],
+    score: null,
+    githubUrl: "https://github.com/chrissssy520/Grocery-Sales-Analysis-SQL",
+    code: `-- Grocery Data Analysis by Christian Kho Aler
+
+-- Most popular branch with percentage rate
+SELECT branch,
+    COUNT(*) as sales_per_branch,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(),2) as percent_branch
+    FROM transactions
+    GROUP BY branch
+    ORDER BY sales_per_branch DESC;
+
+-- Most Used payment method with percentage rate
+SELECT payment_method,
+    COUNT(*) as total_payment_method,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(),2) AS percent_payment
+    FROM transactions
+    GROUP BY payment_method
+    ORDER BY total_payment_method DESC;
+
+-- Profitable to least products
+SELECT p.product_id, p.product_name,
+    SUM(total_amount) as total_profit
+    FROM products p JOIN transactions t ON p.product_id = t.product_id
+    GROUP BY product_id, p.product_name
+    ORDER BY total_profit DESC;
+
+-- Gender breakdown with percentage rate
+SELECT gender, COUNT(*) total_gender,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(),2) as percent_gender
+    FROM transactions
+    GROUP BY gender
+    ORDER BY total_gender DESC;
+
+-- Monthly Running total (2023-2024)
+SELECT
+    YEAR(transaction_date) as year_trans,
+    MONTH(transaction_date) as month_trans,
+    SUM(SUM(total_amount)) OVER(
+        PARTITION BY YEAR(transaction_date)
+        ORDER BY MONTH(transaction_date) ASC
+    ) running_total
+    FROM transactions
+    GROUP BY year_trans, month_trans
+    ORDER BY year_trans, month_trans;
+
+-- Most profitable product per branch
+WITH rank_combo AS (
+    SELECT t.branch, p.product_name,
+        SUM(total_amount) as total_profit,
+        RANK() OVER(PARTITION BY t.branch ORDER BY SUM(total_amount) DESC) as rnk
+        FROM products p JOIN transactions t ON p.product_id = t.product_id
+        GROUP BY t.branch, p.product_name
+)
+SELECT branch, product_name, total_profit
+    FROM rank_combo WHERE rnk = 1
+    ORDER BY total_profit DESC;
+
+-- Most sold product per branch
+WITH rank_combo AS (
+    SELECT t.branch, p.product_name,
+        SUM(quantity) as total_sales,
+        RANK() OVER(PARTITION BY t.branch ORDER BY SUM(quantity) DESC) as rnk
+        FROM products p JOIN transactions t ON p.product_id = t.product_id
+        GROUP BY t.branch, p.product_name
+)
+SELECT branch, product_name, total_sales
+    FROM rank_combo WHERE rnk = 1
+    ORDER BY total_sales DESC;
+
+-- Overall profit including all years
+SELECT SUM(total_amount) as overall_profit FROM transactions;`,
+  },
+  {
+    id: 6,
+    title: "Data Cleaning: Messy Retail Dataset",
+    subtitle: "UPDATE · CASE WHEN · Temp Tables · STR_TO_DATE",
+    description:
+      "A full SQL data cleaning project on a deliberately messy Philippine grocery dataset. Fixes mixed casing, wrong data types, NULL values, inconsistent gender and payment values, 4 mixed date formats, and duplicate rows using MySQL-safe temp table approach.",
+    tags: ["MySQL", "Data Cleaning", "UPDATE", "CASE WHEN", "STR_TO_DATE"],
+    score: null,
+    githubUrl: "https://github.com/chrissssy520/Clean-Messy-data-using-SQL-",
+    code: `-- DATA CLEANING PROJECT: Messy Retail Dataset
+-- Author: Christian Kho Aler
+
+-- Fix casing, spaces, and ensure price is numeric
+UPDATE products
+SET
+    category = TRIM(LOWER(category)),
+    brand = TRIM(UPPER(brand)),
+    product_name = TRIM(LOWER(product_name)),
+    price = CAST(price AS DECIMAL(10,2));
+
+-- Handle missing product names
+UPDATE products
+SET product_name = 'unknown product'
+WHERE product_name IS NULL OR product_name = '';
+
+-- Remove Duplicate Products using Temp Table (MySQL Safe Way)
+CREATE TEMPORARY TABLE keep_product_ids AS
+SELECT MIN(product_id) as product_id
+FROM products
+GROUP BY product_name, brand, price;
+
+DELETE FROM products
+WHERE product_id NOT IN (SELECT product_id FROM keep_product_ids);
+DROP TEMPORARY TABLE keep_product_ids;
+
+-- Fix basic casing and trim spaces
+UPDATE transactions
+SET
+    customer_name = TRIM(LOWER(customer_name)),
+    customer_city = TRIM(customer_city),
+    gender = TRIM(UPPER(gender)),
+    payment_method = TRIM(UPPER(payment_method));
+
+-- Standardize Gender values
+UPDATE transactions
+SET gender = CASE
+    WHEN gender IN ('M', 'MALE', 'MAN') THEN 'Male'
+    WHEN gender IN ('F', 'FEMALE', 'WOMAN', 'WOMEN') THEN 'Female'
+    ELSE 'Unknown'
+END;
+
+-- Standardize Payment Method
+UPDATE transactions
+SET payment_method = CASE
+    WHEN payment_method LIKE '%CREDIT%' THEN 'Credit Card'
+    WHEN payment_method LIKE '%CASH%' THEN 'Cash'
+    WHEN payment_method LIKE '%WALLET%' OR payment_method = 'GCASH' THEN 'Digital Wallet'
+    ELSE payment_method
+END;
+
+-- Fix Mixed Date Formats
+UPDATE transactions
+SET transaction_date = CASE
+    WHEN transaction_date LIKE '____/%/%' THEN STR_TO_DATE(transaction_date, '%Y/%m/%d')
+    WHEN transaction_date LIKE '%/%/____' THEN STR_TO_DATE(transaction_date, '%m/%d/%Y')
+    WHEN transaction_date LIKE '____-__-__' THEN STR_TO_DATE(transaction_date, '%Y-%m-%d')
+    WHEN transaction_date LIKE '__-__-____' THEN STR_TO_DATE(transaction_date, '%d-%m-%Y')
+    ELSE transaction_date
+END;
+
+-- Remove NULL/incomplete records
+DELETE FROM transactions
+WHERE quantity IS NULL OR total_amount IS NULL OR total_amount = 0;
+
+-- Remove Duplicate Transactions using Temp Table
+CREATE TEMPORARY TABLE keep_trans_ids AS
+SELECT MIN(transaction_id) as transaction_id
+FROM transactions
+GROUP BY customer_name, product_id, transaction_date, total_amount;
+
+DELETE FROM transactions
+WHERE transaction_id NOT IN (SELECT transaction_id FROM keep_trans_ids);
+DROP TEMPORARY TABLE keep_trans_ids;
+
+-- Final Check
+SELECT * FROM products LIMIT 10;
+SELECT * FROM transactions LIMIT 10;`,
+  },
+  {
+    
     id: 1,
     title: "SQL Sales Data Exploration",
     subtitle: "Aggregations · Window Functions · CTEs",
@@ -426,7 +690,10 @@ function SqlSection() {
   const ref1 = useScrollReveal(0)
   const ref2 = useScrollReveal(150)
   const ref3 = useScrollReveal(300)
-  const refs = [ref1, ref2, ref3]
+const ref4 = useScrollReveal(450)
+const ref5 = useScrollReveal(600)
+const ref6 = useScrollReveal(750)
+const refs = [ref1, ref2, ref3, ref4, ref5, ref6]
 
   return (
     <div className="mb-16">
