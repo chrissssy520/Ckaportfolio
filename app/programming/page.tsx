@@ -48,7 +48,7 @@ export default function ProgrammingPage() {
               <div className="p-6 lg:p-8">
 
                 <h3 className="text-xl font-semibold lg:text-2xl">
-                  ProStudio
+                  Brainsells
                 </h3>
 
                 <p className="mt-1 font-mono text-sm text-primary">
@@ -58,7 +58,7 @@ export default function ProgrammingPage() {
                 <div className="mt-3 flex flex-wrap items-center gap-3">
 
                   <a
-                    href="https://prostudio-teal.vercel.app/"
+                    href=" https://brainsells.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 rounded bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
@@ -67,12 +67,12 @@ export default function ProgrammingPage() {
                   </a>
 
                   <a
-                    href="https://prostudio-teal.vercel.app/"
+                    href=" https://brainsells.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-muted-foreground underline"
                   >
-                    https://prostudio-teal.vercel.app/
+                    https://brainsells.vercel.app/
                   </a>
 
                 </div>
@@ -80,19 +80,18 @@ export default function ProgrammingPage() {
                 {/* Screenshots */}
                 <div className="mt-4 mb-4 grid grid-cols-2 gap-2 lg:grid-cols-3">
                   {[
-                    "pic1.png",
-                    "pic2.png",
-                    "pic3.png",
-                    "pic4.png",
-                    "pic5.png",
-                    "pic6.png",
-                    "pic7.png",
-                    "pic8.png",
+                    "brain1.png",
+                    "brain2.png",
+                    "brain3.png",
+                    "brain4.png",
+                    "brain5.png",
+                    "brain6.png",
+                 
                   ].map((pic) => (
                     <img
                       key={pic}
                       src={`/images/${pic}`}
-                      alt={`ProStudio screenshot ${pic}`}
+                      alt={`Brainsells screenshot ${pic}`}
                       className="h-60 w-full rounded-lg object-cover"
                     />
                   ))}
