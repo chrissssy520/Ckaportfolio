@@ -24,7 +24,7 @@ const skills = [
     name: "Microsoft Suite",
     detail: "Productivity Tools",
     icon: MonitorSmartphone,
-    level: 75,
+    level: 80,
     tags: ["Word", "PowerPoint", "Outlook", "Teams"],
   },
   
@@ -32,7 +32,7 @@ const skills = [
     name: "Microsoft Excel",
     detail: "Advanced",
     icon: FileSpreadsheet,
-    level: 75,
+    level: 80,
     tags: ["Pivot Tables", "VLOOKUP/XLOOKUP", "Data Modeling", "Macros"],
   },
   {
@@ -46,7 +46,7 @@ const skills = [
     name: "SQL",
     detail: "Querying & Analysis",
     icon: Database,
-    level: 65,
+    level: 70,
     tags: ["MySQL", "Joins", "Aggregation", "Subqueries"],
   },
   {
@@ -68,7 +68,7 @@ const skills = [
     name: "Vibe Coding",
     detail: "Rapid Prototyping",
     icon: Code2,
-    level: 65,
+    level: 80,
     tags: ["AI-Assisted Dev", "Web Prototypes"],
   },
   {
