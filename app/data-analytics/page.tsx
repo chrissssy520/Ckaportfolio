@@ -809,12 +809,12 @@ export default function DataAnalyticsPage() {
                 </div>
            <div className="mt-4 mb-4 grid grid-cols-2 gap-2">
   <img
-    src="/images/PLanalysis1.png"
+    src="/images/planalysis1.png"
     alt="Project P&L Dashboard screenshot 1"
     className="h-68 w-full rounded-lg object-cover object-top"
   />
   <img
-    src="/images/PLanalysis2.png"
+    src="/images/planalysis2.png"
     alt="Project P&L Dashboard screenshot 2"
     className="h-68 w-full rounded-lg object-cover object-top"
   />
