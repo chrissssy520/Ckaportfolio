@@ -95,7 +95,7 @@ export function HeroSection() {
        
 
             <a
-              href="/Chanalerresume.pdf"
+             href="/ChanAlerResume.pdf"
               download="ChristianKhoAler_CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
