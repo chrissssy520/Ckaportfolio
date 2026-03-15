@@ -272,7 +272,6 @@ SELECT * FROM products LIMIT 10;
 SELECT * FROM transactions LIMIT 10;`,
   },
   {
-    
     id: 1,
     title: "SQL Sales Data Exploration",
     subtitle: "Aggregations · Window Functions · CTEs",
@@ -440,8 +439,6 @@ FROM daily ORDER BY order_date;`,
 -- ============================================
 
 WITH total AS (
-    -- Aggregate actual figures into three P&L buckets:
-    -- Revenue, Cost of Goods Sold, and Operating Expenses
     SELECT 
         Financial_year, 
         Region,
@@ -453,23 +450,17 @@ WITH total AS (
 ),
 
 withGrossprofit AS (
-    -- Gross Profit = Total Revenue - Cost of Goods Sold
-    -- Measures profitability before operating expenses
     SELECT *,
         ROUND(total_revenue - total_cogs, 2) AS Gross_profit
     FROM total
 ),
 
 withNetprofit AS (
-    -- Net Profit = Gross Profit - Total Operating Expenses
-    -- Represents the bottom line after all costs are deducted
     SELECT *,
         ROUND(Gross_profit - total_expenses, 2) AS Net_profit
     FROM withGrossprofit
 )
 
--- Final output: Full P&L summary per Region and Financial Year
--- Status flags whether the business unit is Profitable or at a Loss
 SELECT
     Region,
     Financial_year,
@@ -485,7 +476,7 @@ SELECT
 FROM withNetprofit
 ORDER BY Financial_year, Region;`,
   },
- {
+  {
     id: 3,
     title: "HR Employee Data Analysis",
     subtitle: "Window Functions · CTEs · Data Cleaning",
@@ -497,8 +488,6 @@ ORDER BY Financial_year, Region;`,
     code: `-- ============================================
 -- HR Employee Data Analysis
 -- Author: Christian Kho Aler
--- Note: Raw dataset backed up as hr_employee_dataset_backup.csv
---       before any data modification was applied
 -- ============================================
 
 -- Largest Average Salary by Department and Position
@@ -522,12 +511,6 @@ SELECT DISTINCT department,
     FROM Hrdata
     ORDER BY total_employee DESC;
 
--- Total Number of Employee per Position
-SELECT DISTINCT position,
-    COUNT(*) OVER(PARTITION BY position) AS total_employee
-    FROM Hrdata
-    ORDER BY total_employee DESC;
-
 -- Rank 5 of Employees with Most Absences
 WITH rank_absent AS (
 SELECT DISTINCT Employee_id, Full_name, SUM(Absences) as total_absent,
@@ -546,30 +529,7 @@ SELECT Gender, COUNT(*) as head_count,
 FROM hrdata
 GROUP BY gender;
 
--- Longest Tenured Employees
-WITH rank_years as (
-SELECT Employee_id, Full_name,
-    MAX(years_at_Company) as max_years,
-    DENSE_RANK() OVER(ORDER BY MAX(years_at_Company) DESC) as rnk
-    FROM hrdata
-    GROUP BY full_name, Employee_id
-)
-SELECT * FROM rank_years WHERE rnk = 1;
-
--- List of Employees with Low Satisfaction Rate
-SELECT employee_id, full_name, Job_satisfaction
-FROM hrdata
-WHERE job_satisfaction < 3
-ORDER BY job_satisfaction;
-
 -- Fix Inconsistent Data: Job_satisfaction vs Performance_rating
-SELECT employee_id, full_name, Job_satisfaction, Performance_rating,
-    CASE WHEN Job_satisfaction >= 4 THEN "Outstanding"
-         WHEN Job_satisfaction >= 3 THEN "Meets Expectations"
-         ELSE "Disappointed" END AS suggested_rate
-FROM hrdata
-ORDER BY job_satisfaction;
-
 SET SQL_SAFE_UPDATES = 0;
 UPDATE hrdata
     SET Performance_rating =
@@ -577,26 +537,6 @@ UPDATE hrdata
              WHEN Job_satisfaction >= 3 THEN "Meets Expectations"
              ELSE "Disappointed" END;
 SET SQL_SAFE_UPDATES = 1;
-
--- Inactive Employees (Resigned or Terminated)
-SELECT * FROM hrdata
-WHERE employment_status IN ("Terminated", "Resigned");
-
--- Employee Distribution per Region
-SELECT region, COUNT(*) as total_region FROM hrdata
-GROUP BY region
-ORDER BY total_region DESC;
-
--- Employees Who Received the Most Promotions
-WITH rank_promotion as (
-SELECT employee_id, full_name,
-    SUM(promotions) as total_promotion,
-    DENSE_RANK() OVER(ORDER BY SUM(promotions) DESC) as rnk
-    FROM hrdata
-    GROUP BY employee_id, full_name
-)
-SELECT employee_id, full_name, total_promotion, rnk
-FROM rank_promotion WHERE rnk = 1;
 
 -- Promotion Rate per Department
 SELECT department,
@@ -690,10 +630,10 @@ function SqlSection() {
   const ref1 = useScrollReveal(0)
   const ref2 = useScrollReveal(150)
   const ref3 = useScrollReveal(300)
-const ref4 = useScrollReveal(450)
-const ref5 = useScrollReveal(600)
-const ref6 = useScrollReveal(750)
-const refs = [ref1, ref2, ref3, ref4, ref5, ref6]
+  const ref4 = useScrollReveal(450)
+  const ref5 = useScrollReveal(600)
+  const ref6 = useScrollReveal(750)
+  const refs = [ref1, ref2, ref3, ref4, ref5, ref6]
 
   return (
     <div className="mb-16">
@@ -768,11 +708,12 @@ const refs = [ref1, ref2, ref3, ref4, ref5, ref6]
 
 export default function DataAnalyticsPage() {
   const refHeading = useScrollReveal(0)
-  const refCard2 = useScrollReveal(150)
-  const refCard3 = useScrollReveal(300)
-  const refCard4 = useScrollReveal(450)
-  const refCard5 = useScrollReveal(600)
-  const refCard6 = useScrollReveal(750)
+  const refCard1 = useScrollReveal(150)
+  const refCard2 = useScrollReveal(300)
+  const refCard3 = useScrollReveal(450)
+  const refCard4 = useScrollReveal(600)
+  const refCard5 = useScrollReveal(750)
+  const refCard6 = useScrollReveal(900)
 
   return (
     <>
@@ -806,11 +747,9 @@ export default function DataAnalyticsPage() {
           <div className="flex flex-col gap-8">
 
             {/* Philippine Sales Data Analysis */}
-            <div ref={refCard6} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            <div ref={refCard1} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <h3 className="text-xl font-semibold lg:text-2xl">Philippine Sales Data Analysis</h3>
-
-                {/* Updated: subtitle + big teal Download button on right */}
                 <div className="mt-2 flex items-center justify-between gap-4">
                   <p className="font-mono text-sm text-primary">Real-World Data Cleaning & Dashboard Analysis</p>
                   <a
@@ -821,7 +760,6 @@ export default function DataAnalyticsPage() {
                     ⬇ Download Project
                   </a>
                 </div>
-
                 <div className="mt-4 mb-4 grid grid-cols-3 gap-2">
                   {["Sales1.png", "Sales2.png", "Sales3.png"].map((img) => (
                     <img key={img} src={`/images/${img}`} alt={`Sales project screenshot ${img}`} className="h-44 w-full rounded-lg object-cover" />
@@ -853,8 +791,62 @@ export default function DataAnalyticsPage() {
               </div>
             </div>
 
-            {/* Customer Insights */}
+            {/* Project P&L Dashboard */}
             <div ref={refCard2} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+              <div className="p-6 lg:p-8">
+                <h3 className="text-xl font-semibold lg:text-2xl">Project P&L Dashboard</h3>
+                <div className="mt-2 flex items-center justify-between gap-4">
+                  <p className="font-mono text-sm text-primary">Budget vs Actual Financial Analysis</p>
+                  <a
+                    href="https://github.com/chrissssy520/P-L-Analysis-using-pivot-tbl-in-excel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                  >
+                    <Github className="size-4" />
+                    GitHub
+                  </a>
+                </div>
+           <div className="mt-4 mb-4 grid grid-cols-2 gap-2">
+  <img
+    src="/images/PLanalysis1.png"
+    alt="Project P&L Dashboard screenshot 1"
+    className="h-68 w-full rounded-lg object-cover object-top"
+  />
+  <img
+    src="/images/PLanalysis2.png"
+    alt="Project P&L Dashboard screenshot 2"
+    className="h-68 w-full rounded-lg object-cover object-top"
+  />
+</div>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  A fully interactive Profit & Loss Dashboard built in Excel analyzing 500 rows of project financial data across 15 projects, 5 regions, and 3 years (2022–2024). Data was structured using Power Query, then transformed into a dynamic Pivot Table with calculated fields for Gross Profit, Net Profit, Variance, and Profit Margin — with KPI cards and slicers for real-time filtering by Year and Region.
+                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {[
+                    { label: "💰 Total Revenue", detail: "₱44,581,610 actual vs ₱44,695,742 budget — only -0.26% off target" },
+                    { label: "📉 Net Profit", detail: "₱16,604,167 actual vs ₱17,966,567 budget — variance of -7.58%" },
+                    { label: "📊 Profit Margin", detail: "Actual margin at 37% vs budgeted 40% — 3% gap driven by expense overruns" },
+                    { label: "🏗️ Top COGS Variance", detail: "Lambda Gate had the highest COGS overrun at +9.75% above budget" },
+                    { label: "📦 Categories", detail: "Revenue, COGS, and Expenses broken down per project with subtotals" },
+                    { label: "🎛️ Interactive Slicers", detail: "Dynamic Year and Region slicers update all KPIs and figures in real time" },
+                  ].map((item) => (
+                    <div key={item.label} className="rounded-md bg-secondary p-3">
+                      <p className="text-sm font-medium">{item.label}</p>
+                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.detail}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 flex flex-wrap gap-1.5">
+                  {["Excel", "Power Query", "Pivot Table", "P&L Analysis", "Variance Analysis", "KPI Dashboard", "Financial Modeling"].map((tag) => (
+                    <span key={tag} className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Customer Insights */}
+            <div ref={refCard3} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
                   <img src="/images/DA2.JPG" alt="Customer Insights Dashboard" className="w-full rounded-lg object-cover h-52" />
@@ -873,7 +865,7 @@ export default function DataAnalyticsPage() {
             </div>
 
             {/* Customer Retail */}
-            <div ref={refCard3} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            <div ref={refCard4} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
                   <img src="/images/DA3.JPG" alt="Customer Retail Purchase Data" className="w-full rounded-lg object-cover h-52" />
@@ -892,7 +884,7 @@ export default function DataAnalyticsPage() {
             </div>
 
             {/* Pizzeria */}
-            <div ref={refCard4} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            <div ref={refCard5} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
                   <img src="/images/DA4.JPG" alt="Christian's Pizzeria Dashboard" className="w-full rounded-lg object-cover h-52" />
@@ -911,7 +903,7 @@ export default function DataAnalyticsPage() {
             </div>
 
             {/* Healthcare */}
-            <div ref={refCard5} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            <div ref={refCard6} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
                   <img src="/images/DA5.JPG" alt="Christian Med Healthcare Dashboard" className="w-full rounded-lg object-cover h-52" />
