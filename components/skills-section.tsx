@@ -1,99 +1,87 @@
 "use client"
 
 import { useScrollReveal } from "@/hooks/useScrollReveal"
-import {
-  FileSpreadsheet,
-  Database,
-  BarChart3,
-  Palette,
-  Languages,
-  BrainCircuit,
-  Code2,
-  Search,
-  MonitorSmartphone,
-} from "lucide-react"
+import { useState } from "react"
 
-function getSkillLabel(level: number): string {
-  if (level <= 35) return "Beginner"
-  if (level <= 65) return "Intermediate"
-  return "Advanced"
+const categories = [
+  {
+    label: "Data & Analytics",
+    skills: [
+     { name: "Excel", img: "https://img.icons8.com/color/96/microsoft-excel-2019.png" },
+{ name: "Microsoft Suite", img: "https://img.icons8.com/color/96/microsoft.png" },
+      { name: "Power BI", img: "https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg" },
+      { name: "Tableau", img: "https://cdn.worldvectorlogo.com/logos/tableau-software.svg" },
+      { name: "MySQL", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+      { name: "PostgreSQL", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+      { name: "Python", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+      { name: "Pandas", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" },
+    ],
+  },
+  {
+    label: "Creative & Deployment",
+    skills: [
+      { name: "Canva", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg" },
+      { name: "GitHub", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", invert: true },
+      { name: "Vercel", img: "https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico", invert: true },
+      { name: "Firebase", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" },
+    ],
+  },
+]
+
+function SkillCard({ name, img, invert }: { name: string; img: string; invert?: boolean }) {
+  const [imgFailed, setImgFailed] = useState(false)
+
+  return (
+    <div className="group flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:border-primary/40 hover:bg-primary/5 hover:-translate-y-0.5">
+      <div className="flex h-11 w-11 items-center justify-center">
+        {imgFailed ? (
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-[10px] font-bold text-primary">
+            {name.slice(0, 2).toUpperCase()}
+          </div>
+        ) : (
+          <img
+            src={img}
+            alt={name}
+            loading="lazy"
+            decoding="async"
+            className="h-10 w-10 object-contain"
+            style={invert ? { filter: "invert(1)" } : undefined}
+            onError={() => setImgFailed(true)}
+          />
+        )}
+      </div>
+      <span className="text-center text-[11px] font-medium leading-tight text-muted-foreground transition-colors group-hover:text-foreground">
+        {name}
+      </span>
+    </div>
+  )
 }
 
-const skills = [
-    {
-    name: "Microsoft Suite",
-    detail: "Productivity Tools",
-    icon: MonitorSmartphone,
-    level: 80,
-    tags: ["Word", "PowerPoint", "Outlook", "Teams"],
-  },
-  
-  {
-    name: "Microsoft Excel",
-    detail: "Advanced",
-    icon: FileSpreadsheet,
-    level: 80,
-    tags: ["Pivot Tables", "VLOOKUP/XLOOKUP", "Data Modeling", "Macros"],
-  },
-  {
-    name: "Power Query",
-    detail: "ETL & Data Cleaning",
-    icon: Search,
-    level: 70,
-    tags: ["Data Transformation", "Merging", "Automation"],
-  },
-  {
-    name: "SQL",
-    detail: "Querying & Analysis",
-    icon: Database,
-    level: 70,
-    tags: ["MySQL", "Joins", "Aggregation", "Subqueries"],
-  },
-  {
-    name: "Power BI/Tableau",
-    detail: "Currently Learning",
-    icon: BarChart3,
-    level: 60,
-    tags: ["Visualizations", "DAX (Learning)", "Data Modeling"],
-  },
- 
-  {
-    name: "Canva & CapCut",
-    detail: "Visual Content",
-    icon: Palette,
-    level: 75,
-    tags: ["Graphic Design", "Video Editing", "Social Media"],
-  },
-  {
-    name: "Vibe Coding",
-    detail: "Rapid Prototyping",
-    icon: Code2,
-    level: 80,
-    tags: ["AI-Assisted Dev", "Web Prototypes"],
-  },
-  {
-    name: "English Language",
-    detail: "Communication",
-    icon: Languages,
-    level: 70,
-    tags: ["Written", "Verbal", "Technical Writing"],
-  },
+function CategoryBlock({
+  label,
+  skills,
+}: {
+  label: string
+  skills: (typeof categories)[0]["skills"]
+}) {
+  const ref = useScrollReveal(0)
 
-]
+  return (
+    <div ref={ref} className="reveal flex w-full flex-col items-center gap-4">
+      <p className="self-start border-l-2 border-primary/40 pl-3 font-mono text-[11px] uppercase tracking-widest text-primary/60">
+        {label}
+      </p>
+      <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-4">
+        {skills.map((skill) => (
+          <SkillCard key={skill.name} {...skill} />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export function SkillsSection() {
   const refHeading = useScrollReveal(0)
-  const refCard1 = useScrollReveal(0)
-  const refCard2 = useScrollReveal(75)
-  const refCard3 = useScrollReveal(150)
-  const refCard4 = useScrollReveal(225)
-  const refCard5 = useScrollReveal(300)
-  const refCard6 = useScrollReveal(375)
-  const refCard7 = useScrollReveal(450)
-  const refCard8 = useScrollReveal(525)
-  const refCard9 = useScrollReveal(600)
-
-  const cardRefs = [refCard1, refCard2, refCard3, refCard4, refCard5, refCard6, refCard7, refCard8, refCard9]
 
   return (
     <section id="skills" className="py-24 px-6">
@@ -111,55 +99,9 @@ export function SkillsSection() {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {skills.map((skill, index) => (
-            <div
-              key={skill.name}
-              ref={cardRefs[index]}
-              className="reveal group relative rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                  <skill.icon className="size-4" />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="text-sm font-semibold text-foreground leading-tight">
-                    {skill.name}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    {skill.detail}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mb-3">
-                <div className="mb-1.5 flex items-center justify-between">
-                  <span className="text-[11px] text-muted-foreground">
-                    {getSkillLabel(skill.level)}
-                  </span>
-                  <span className="text-xs font-medium text-primary">
-                    {skill.level}%
-                  </span>
-                </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
-                  <div
-                    className="h-full rounded-full bg-primary transition-all duration-500"
-                    style={{ width: `${skill.level}%` }}
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5">
-                {skill.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-md border border-border bg-secondary/50 px-2 py-0.5 text-[11px] text-muted-foreground transition-colors group-hover:border-primary/20 group-hover:text-secondary-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+        <div className="flex flex-col items-center gap-10">
+          {categories.map((cat) => (
+            <CategoryBlock key={cat.label} label={cat.label} skills={cat.skills} />
           ))}
         </div>
       </div>
