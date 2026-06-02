@@ -3,7 +3,7 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal"
 import { Navbar } from "@/components/navbar"
 import { useState } from "react"
-import { X, Github } from "lucide-react"
+import { X, Github, BarChart2 } from "lucide-react"
 
 // ─── SQL PROJECTS DATA ───────────────────────────────────────────────────────
 
@@ -271,282 +271,7 @@ DROP TEMPORARY TABLE keep_trans_ids;
 SELECT * FROM products LIMIT 10;
 SELECT * FROM transactions LIMIT 10;`,
   },
-  {
-    id: 1,
-    title: "SQL Sales Data Exploration",
-    subtitle: "Aggregations · Window Functions · CTEs",
-    description:
-      "15 SQL queries from Basic to Advanced using a 500-row sales dataset. Covers total revenue by region, top products, sales rep rankings, running totals, LAG/LEAD analysis, and more.",
-    tags: ["MySQL", "Window Functions", "CTEs", "RANK()", "LAG/LEAD"],
-    score: "25/25",
-    githubUrl: "https://github.com/chrissssy520/sql-sales-data-exploration",
-    code: `-- ============================================================
---  SQL PRACTICE PORTFOLIO
---  Dataset: orders_raw (500 rows x 16 columns)
---  Author: Christian Kho Aler
---  Topics: Aggregations, Window Functions, CTEs, Subqueries
--- ============================================================
 
--- 🟢 BASIC ─────────────────────────────────────────────────
-
--- 1. Total revenue per region (high to low)
-SELECT region, SUM(revenue) AS total_revenue
-FROM orders_raw
-GROUP BY region
-ORDER BY total_revenue DESC;
-
--- 2. Top 5 products by total revenue
-SELECT product_name, SUM(revenue) AS total_revenue
-FROM orders_raw
-GROUP BY product_name
-ORDER BY total_revenue DESC
-LIMIT 5;
-
--- 3. Count of orders per payment method
-SELECT payment_method, COUNT(*) AS total
-FROM orders_raw
-GROUP BY payment_method
-ORDER BY total DESC;
-
--- 4. Total number of orders in the dataset
-SELECT COUNT(*) AS total_orders FROM orders_raw;
-
--- 5. Orders with discount greater than 20%
-SELECT * FROM orders_raw WHERE discount > 0.2;
-
--- 🟡 INTERMEDIATE ──────────────────────────────────────────
-
--- 6. Average discount percentage per category
-SELECT category, ROUND(AVG(discount) * 100, 0) AS discount_percentage
-FROM orders_raw
-GROUP BY category
-ORDER BY discount_percentage DESC;
-
--- 7. Sales rep ranking by total revenue
-SELECT
-    sales_rep,
-    SUM(revenue) AS total_revenue,
-    RANK() OVER (ORDER BY SUM(revenue) DESC) AS revenue_rank
-FROM orders_raw
-GROUP BY sales_rep
-ORDER BY revenue_rank;
-
--- 8. Orders by status with percentage
-SELECT
-    order_status,
-    COUNT(*) AS total,
-    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 1) AS percentage
-FROM orders_raw
-GROUP BY order_status
-ORDER BY total DESC;
-
--- 9. Category with the most profit
-SELECT category, SUM(profit) AS total_profit
-FROM orders_raw
-GROUP BY category
-ORDER BY total_profit DESC
-LIMIT 1;
-
--- 10. Orders where revenue is above average
-SELECT * FROM (
-    SELECT order_id, revenue,
-        ROUND(AVG(revenue) OVER(), 2) AS avg_revenue
-    FROM orders_raw
-) AS sub
-WHERE revenue > avg_revenue;
-
--- 🔴 ADVANCED ──────────────────────────────────────────────
-
--- 11. Running total of revenue by date (cumulative)
-SELECT
-    order_date,
-    SUM(revenue) AS daily_revenue,
-    SUM(SUM(revenue)) OVER (ORDER BY order_date) AS running_total
-FROM orders_raw
-GROUP BY order_date
-ORDER BY order_date;
-
--- 12. Rank products within each category by profit
-WITH ranked AS (
-    SELECT category, product_name, SUM(profit) AS total_profit,
-        RANK() OVER (PARTITION BY category ORDER BY SUM(profit) DESC) AS profit_rank
-    FROM orders_raw
-    GROUP BY category, product_name
-)
-SELECT category, product_name, total_profit
-FROM ranked WHERE profit_rank = 1
-ORDER BY total_profit DESC;
-
--- 13. Average, fastest, slowest delivery per region
-SELECT
-    region,
-    ROUND(AVG(DATEDIFF(delivery_date, order_date)), 0) AS avg_days,
-    MIN(DATEDIFF(delivery_date, order_date)) AS fastest,
-    MAX(DATEDIFF(delivery_date, order_date)) AS slowest
-FROM orders_raw
-WHERE order_status = 'Delivered'
-GROUP BY region ORDER BY avg_days;
-
--- 14. Top sales rep per region by total revenue
-WITH regional_sales AS (
-    SELECT sales_rep, region, SUM(revenue) AS total_revenue,
-        RANK() OVER (PARTITION BY region ORDER BY SUM(revenue) DESC) AS revenue_rank
-    FROM orders_raw
-    GROUP BY sales_rep, region
-)
-SELECT sales_rep, region, total_revenue
-FROM regional_sales WHERE revenue_rank = 1
-ORDER BY total_revenue DESC;
-
--- 15. Monthly revenue totals — best month ranking
-WITH monthly AS (
-    SELECT
-        MONTH(order_date) AS month_num,
-        MONTHNAME(order_date) AS month_name,
-        SUM(revenue) AS total_revenue,
-        RANK() OVER (ORDER BY SUM(revenue) DESC) AS revenue_rank
-    FROM orders_raw
-    GROUP BY month_num, month_name
-)
-SELECT month_name, total_revenue, revenue_rank
-FROM monthly ORDER BY month_num;
-
--- ⭐ BONUS ─────────────────────────────────────────────────
-
--- Day over day revenue change (LAG)
-WITH daily AS (
-    SELECT order_date, SUM(revenue) AS daily_revenue
-    FROM orders_raw GROUP BY order_date
-)
-SELECT
-    order_date, daily_revenue,
-    LAG(daily_revenue) OVER (ORDER BY order_date) AS yesterday_revenue,
-    daily_revenue - LAG(daily_revenue) OVER (ORDER BY order_date) AS revenue_change
-FROM daily ORDER BY order_date;`,
-  },
-  {
-    id: 2,
-    title: "Profit & Loss Analysis",
-    subtitle: "CTEs · CASE WHEN · GROUP BY",
-    description:
-      "P&L statement analysis across multiple regions and financial years. Calculates Total Revenue, COGS, Gross Profit, and Net Profit using a clean CTE chain — with a Profitable/Loss status flag per region.",
-    tags: ["MySQL", "CTEs", "CASE WHEN", "GROUP BY", "Aggregations"],
-    score: null,
-    githubUrl: "https://github.com/chrissssy520/Profit-LossSQL",
-    code: `SELECT * FROM profit_loss;
--- ============================================
--- Profit & Loss Analysis by Region and Year
--- ============================================
-
-WITH total AS (
-    SELECT 
-        Financial_year, 
-        Region,
-        ROUND(SUM(CASE WHEN Account_Group = "Revenue" THEN Actual ELSE 0 END), 2)             AS total_revenue,
-        ROUND(SUM(CASE WHEN Account_Group = "Cost of Goods Sold" THEN Actual ELSE 0 END), 2)  AS total_cogs,
-        ROUND(SUM(CASE WHEN Account_Group = "Expenses" THEN Actual ELSE 0 END), 2)            AS total_expenses
-    FROM profit_loss
-    GROUP BY Financial_year, Region
-),
-
-withGrossprofit AS (
-    SELECT *,
-        ROUND(total_revenue - total_cogs, 2) AS Gross_profit
-    FROM total
-),
-
-withNetprofit AS (
-    SELECT *,
-        ROUND(Gross_profit - total_expenses, 2) AS Net_profit
-    FROM withGrossprofit
-)
-
-SELECT
-    Region,
-    Financial_year,
-    total_revenue   AS Total_Revenue,
-    total_cogs      AS Total_COGS,
-    total_expenses  AS Total_Expenses,
-    Gross_profit,
-    Net_profit,
-    CASE 
-        WHEN Net_profit > 0 THEN "Profitable"
-        ELSE "Loss" 
-    END AS Status
-FROM withNetprofit
-ORDER BY Financial_year, Region;`,
-  },
-  {
-    id: 3,
-    title: "HR Employee Data Analysis",
-    subtitle: "Window Functions · CTEs · Data Cleaning",
-    description:
-      "HR analytics on a 500-row employee dataset covering salary benchmarking, absence tracking, promotion rates, tenure, gender distribution, and a data quality fix using UPDATE with CASE WHEN.",
-    tags: ["MySQL", "Window Functions", "CTEs", "DENSE_RANK()", "UPDATE"],
-    score: null,
-    githubUrl: "https://github.com/chrissssy520/HR-analysis-SQL",
-    code: `-- ============================================
--- HR Employee Data Analysis
--- Author: Christian Kho Aler
--- ============================================
-
--- Largest Average Salary by Department and Position
-SELECT DISTINCT department, position,
-ROUND(AVG(salary)
-OVER(PARTITION BY department),2) AS avg_salary
-    FROM Hrdata
-    ORDER BY avg_salary DESC;
-
--- Employees whose salary are higher than Average salary
-SELECT employee_id, full_name, salary,
-(SELECT ROUND(AVG(salary),2) FROM hrdata) as company_avg,
-salary - (SELECT ROUND(AVG(salary),2) FROM hrdata) as salary_gap
-FROM hrdata
-WHERE salary > (SELECT AVG(salary) FROM hrdata)
-ORDER BY salary DESC;
-
--- Total Number of Employee per Department
-SELECT DISTINCT department,
-    COUNT(*) OVER(PARTITION BY department) AS total_employee
-    FROM Hrdata
-    ORDER BY total_employee DESC;
-
--- Rank 5 of Employees with Most Absences
-WITH rank_absent AS (
-SELECT DISTINCT Employee_id, Full_name, SUM(Absences) as total_absent,
-        DENSE_RANK() OVER(ORDER BY SUM(Absences) DESC) AS rnk
-        FROM hrdata
-        GROUP BY full_name, employee_id
-)
-SELECT Employee_id, full_name, total_absent, rnk
-    FROM rank_absent
-    WHERE rnk <= 5;
-
--- Gender Comparison and Average Age
-SELECT Gender, COUNT(*) as head_count,
-    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) AS head_percentage,
-    ROUND(AVG(Age),2) as avg_age
-FROM hrdata
-GROUP BY gender;
-
--- Fix Inconsistent Data: Job_satisfaction vs Performance_rating
-SET SQL_SAFE_UPDATES = 0;
-UPDATE hrdata
-    SET Performance_rating =
-        CASE WHEN Job_satisfaction >= 4 THEN "Outstanding"
-             WHEN Job_satisfaction >= 3 THEN "Meets Expectations"
-             ELSE "Disappointed" END;
-SET SQL_SAFE_UPDATES = 1;
-
--- Promotion Rate per Department
-SELECT department,
-    COUNT(*) as total_employee,
-    SUM(promotions) as total_promotion,
-    ROUND(SUM(promotions) / COUNT(*) * 100, 2) AS promotion_rate_percentage
-FROM hrdata
-GROUP BY department
-ORDER BY promotion_rate_percentage DESC;`,
-  },
 ]
 
 // ─── SQL CODE MODAL ───────────────────────────────────────────────────────────
@@ -710,10 +435,17 @@ export default function DataAnalyticsPage() {
   const refHeading = useScrollReveal(0)
   const refCard1 = useScrollReveal(150)
   const refCard2 = useScrollReveal(300)
+  
+  // Tableau Projects
   const refCard3 = useScrollReveal(450)
   const refCard4 = useScrollReveal(600)
   const refCard5 = useScrollReveal(750)
+  
+  // Power BI Projects
   const refCard6 = useScrollReveal(900)
+  const refCard7 = useScrollReveal(1050)
+  const refCard8 = useScrollReveal(1200)
+  const refCard9 = useScrollReveal(1350)
 
   return (
     <>
@@ -743,113 +475,124 @@ export default function DataAnalyticsPage() {
           {/* ─── SQL SECTION — TOP ─── */}
           <SqlSection />
 
+
           {/* ─── OTHER PROJECTS ─── */}
           <div className="flex flex-col gap-8">
 
-            {/* Philippine Sales Data Analysis */}
-            <div ref={refCard1} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
-              <div className="p-6 lg:p-8">
-                <h3 className="text-xl font-semibold lg:text-2xl">Philippine Sales Data Analysis</h3>
-                <div className="mt-2 flex items-center justify-between gap-4">
-                  <p className="font-mono text-sm text-primary">Real-World Data Cleaning & Dashboard Analysis</p>
-                  <a
-                    href="/Sales1cka.xlsx"
-                    download="Philippine_Sales_Analysis_CKA.xlsx"
-                    className="shrink-0 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-                  >
-                    ⬇ Download Project
-                  </a>
-                </div>
-                <div className="mt-4 mb-4 grid grid-cols-3 gap-2">
-                  {["Sales1.png", "Sales2.png", "Sales3.png"].map((img) => (
-                    <img key={img} src={`/images/${img}`} alt={`Sales project screenshot ${img}`} className="h-44 w-full rounded-lg object-cover" />
-                  ))}
-                </div>
-                <p className="mt-4 leading-relaxed text-muted-foreground">
-                  A complete end-to-end data analytics project using a real-world messy Philippine sales dataset. Raw data containing inconsistent date formats, mixed letter casing, duplicate columns, and null values was cleaned using Power Query. Pivot Tables were then used to analyze product profitability, category performance, discount impact, delivery time, and top sales agents — with KPI cards linked via slicer for interactive regional filtering.
-                </p>
-                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {[
-                    { label: "💰 Total Sales", detail: "₱1,118,705 across all regions — Laptop is the top product at ₱291,600" },
-                    { label: "📦 Top Category", detail: "Electronics leads with 36 units sold and ₱604,600 in profit" },
-                    { label: "🏷️ Discount Impact", detail: "Clothing has the highest discount (12.78%) yet lowest profit — over-discounting hurts margins" },
-                    { label: "🚚 Delivery", detail: "Average delivery time is 6 days across all regions" },
-                    { label: "👤 Top Agent", detail: "Juan Dela Cruz leads sales with ₱429,300 in total revenue" },
-                    { label: "💳 Payment", detail: "Cash is the most popular payment method among customers" },
-                  ].map((item) => (
-                    <div key={item.label} className="rounded-md bg-secondary p-3">
-                      <p className="text-sm font-medium">{item.label}</p>
-                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.detail}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6 flex flex-wrap gap-1.5">
-                  {["Excel", "Power Query", "Pivot Table", "Data Cleaning", "KPI Dashboard"].map((tag) => (
-                    <span key={tag} className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
+      {/* ─── DASHBOARDS SECTION HEADER ─── */}
+          <div className="mb-8 pt-8">
+            <p className="font-mono text-sm tracking-widest uppercase text-primary mb-1">
+              Visualizations
+            </p>
+            <h2 className="text-2xl font-bold tracking-tight">
+              Dashboard Projects
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Explore interactive dashboards built with <span className="text-primary font-medium">Tableau, Power BI, and Excel</span>.
+            </p>
+          </div>
 
-            {/* Project P&L Dashboard */}
-            <div ref={refCard2} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
-              <div className="p-6 lg:p-8">
-                <h3 className="text-xl font-semibold lg:text-2xl">Project P&L Dashboard</h3>
-                <div className="mt-2 flex items-center justify-between gap-4">
-                  <p className="font-mono text-sm text-primary">Budget vs Actual Financial Analysis</p>
-                  <a
-                    href="https://github.com/chrissssy520/P-L-Analysis-using-pivot-tbl-in-excel"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-                  >
-                    <Github className="size-4" />
-                    GitHub
-                  </a>
-                </div>
-           <div className="mt-4 mb-4 grid grid-cols-2 gap-2">
-  <img
-    src="/images/planalysis1.png"
-    alt="Project P&L Dashboard screenshot 1"
-    className="h-68 w-full rounded-lg object-cover object-top"
-  />
-  <img
-    src="/images/planalysis2.png"
-    alt="Project P&L Dashboard screenshot 2"
-    className="h-68 w-full rounded-lg object-cover object-top"
-  />
-</div>
-                <p className="mt-4 leading-relaxed text-muted-foreground">
-                  A fully interactive Profit & Loss Dashboard built in Excel analyzing 500 rows of project financial data across 15 projects, 5 regions, and 3 years (2022–2024). Data was structured using Power Query, then transformed into a dynamic Pivot Table with calculated fields for Gross Profit, Net Profit, Variance, and Profit Margin — with KPI cards and slicers for real-time filtering by Year and Region.
-                </p>
-                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {[
-                    { label: "💰 Total Revenue", detail: "₱44,581,610 actual vs ₱44,695,742 budget — only -0.26% off target" },
-                    { label: "📉 Net Profit", detail: "₱16,604,167 actual vs ₱17,966,567 budget — variance of -7.58%" },
-                    { label: "📊 Profit Margin", detail: "Actual margin at 37% vs budgeted 40% — 3% gap driven by expense overruns" },
-                    { label: "🏗️ Top COGS Variance", detail: "Lambda Gate had the highest COGS overrun at +9.75% above budget" },
-                    { label: "📦 Categories", detail: "Revenue, COGS, and Expenses broken down per project with subtotals" },
-                    { label: "🎛️ Interactive Slicers", detail: "Dynamic Year and Region slicers update all KPIs and figures in real time" },
-                  ].map((item) => (
-                    <div key={item.label} className="rounded-md bg-secondary p-3">
-                      <p className="text-sm font-medium">{item.label}</p>
-                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.detail}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6 flex flex-wrap gap-1.5">
-                  {["Excel", "Power Query", "Pivot Table", "P&L Analysis", "Variance Analysis", "KPI Dashboard", "Financial Modeling"].map((tag) => (
-                    <span key={tag} className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Customer Insights */}
+            {/* TABLEAU: E-Commerce Dashboard */}
             <div ref={refCard3} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
-                  <img src="/images/DA2.JPG" alt="Customer Insights Dashboard" className="w-full rounded-lg object-cover h-52" />
+                  <img src="/images/tableau1.png" alt="E-Commerce Tableau Dashboard" className="w-full rounded-lg border border-border object-cover object-top h-52 lg:h-full" />
+                  <div className="flex flex-col justify-center">
+                    <h3 className="text-xl font-semibold lg:text-2xl">E-Commerce Sales & CLV Analysis</h3>
+                    <p className="mt-1 font-mono text-sm text-primary">Tableau • Revenue • Customer Lifetime Value</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      An interactive Tableau dashboard analyzing over ₱20.15M in revenue and ₱9.8M in profit across 1,009 orders. Tracks MoM revenue trends and evaluates Average Customer Lifetime Value (CLV) broken down by Philippine regions and major sales channels, including TikTok Shop, Lazada, Shopee, and Walk-in sales.
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {["Tableau", "Data Visualization", "E-Commerce", "KPI Tracking"].map((tag) => (
+                        <span key={tag} className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{tag}</span>
+                      ))}
+                    </div>
+                    <div className="mt-6">
+                      <a 
+                        href="https://public.tableau.com/app/profile/christian.aler3008/viz/Ecom2_17786582479070/Main" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                      >
+                        <BarChart2 className="size-4" />
+                        View on Tableau Public
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* TABLEAU: Logistics Dashboard */}
+            <div ref={refCard4} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+              <div className="p-6 lg:p-8">
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <img src="/images/tableau2.png" alt="Logistics Tableau Dashboard" className="w-full rounded-lg border border-border object-cover object-top h-52 lg:h-full" />
+                  <div className="flex flex-col justify-center">
+                    <h3 className="text-xl font-semibold lg:text-2xl">Logistics & Delivery Performance</h3>
+                    <p className="mt-1 font-mono text-sm text-primary">Tableau • Supply Chain • Delivery Metrics</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      A supply chain dashboard monitoring local logistics performance. Tracks critical KPIs like a 75.51% Delivery Rate, 50% On-Time Rate, and Average Delivery Days. Features courier failure rate comparisons (Ninja Van, J&T, LBC) and shipment status distribution analysis across major hubs in Manila, Cebu, and Davao.
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {["Tableau", "Logistics", "Supply Chain", "Performance Analysis"].map((tag) => (
+                        <span key={tag} className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{tag}</span>
+                      ))}
+                    </div>
+                    <div className="mt-6">
+                      <a 
+                        href="https://public.tableau.com/app/profile/christian.aler3008/viz/Logistic_17759426054710/Dashboard1" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                      >
+                        <BarChart2 className="size-4" />
+                        View on Tableau Public
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* TABLEAU: Production Analysis Dashboard */}
+            <div ref={refCard5} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+              <div className="p-6 lg:p-8">
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <img src="/images/tableau3.png" alt="Production Analysis Tableau Dashboard" className="w-full rounded-lg border border-border object-cover object-top h-52 lg:h-full" />
+                  <div className="flex flex-col justify-center">
+                    <h3 className="text-xl font-semibold lg:text-2xl">Manufacturing Production Analysis</h3>
+                    <p className="mt-1 font-mono text-sm text-primary">Tableau • OEE • Defect Tracking</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      A manufacturing performance dashboard focusing on Overall Equipment Effectiveness (OEE) currently sitting at 74.52%. Highlights downtime rates and defect rates across various machine types (CNC Lathe, Assembly, Stamping Press), and analyzes shift performance to prioritize actions on unplanned breakdowns.
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {["Tableau", "Manufacturing", "OEE", "Defect Analysis"].map((tag) => (
+                        <span key={tag} className="rounded bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{tag}</span>
+                      ))}
+                    </div>
+                    <div className="mt-6">
+                      <a 
+                        href="https://public.tableau.com/app/profile/christian.aler3008/viz/ProductionAnalysis_17766512791150/MainDashboard" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                      >
+                        <BarChart2 className="size-4" />
+                        View on Tableau Public
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Customer Insights (Power BI) */}
+            <div ref={refCard6} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+              <div className="p-6 lg:p-8">
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <img src="/images/DA2.JPG" alt="Customer Insights Dashboard" className="w-full rounded-lg object-cover h-52 lg:h-full" />
                   <div className="flex flex-col justify-center">
                     <h3 className="text-xl font-semibold lg:text-2xl">Customer Insights & Behavioral Dashboard</h3>
                     <p className="mt-1 font-mono text-sm text-primary">Retail Behavioral Analysis</p>
@@ -864,11 +607,11 @@ export default function DataAnalyticsPage() {
               </div>
             </div>
 
-            {/* Customer Retail */}
-            <div ref={refCard4} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            {/* Customer Retail (Power BI) */}
+            <div ref={refCard7} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
-                  <img src="/images/DA3.JPG" alt="Customer Retail Purchase Data" className="w-full rounded-lg object-cover h-52" />
+                  <img src="/images/DA3.JPG" alt="Customer Retail Purchase Data" className="w-full rounded-lg object-cover h-52 lg:h-full" />
                   <div className="flex flex-col justify-center">
                     <h3 className="text-xl font-semibold lg:text-2xl">Customer Retail Purchase Data 2023</h3>
                     <p className="mt-1 font-mono text-sm text-primary">Retail Sales Analysis</p>
@@ -883,11 +626,11 @@ export default function DataAnalyticsPage() {
               </div>
             </div>
 
-            {/* Pizzeria */}
-            <div ref={refCard5} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            {/* Pizzeria (Power BI) */}
+            <div ref={refCard8} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
-                  <img src="/images/DA4.JPG" alt="Christian's Pizzeria Dashboard" className="w-full rounded-lg object-cover h-52" />
+                  <img src="/images/DA4.JPG" alt="Christian's Pizzeria Dashboard" className="w-full rounded-lg object-cover h-52 lg:h-full" />
                   <div className="flex flex-col justify-center">
                     <h3 className="text-xl font-semibold lg:text-2xl">{"Christian's Pizzeria Dashboard"}</h3>
                     <p className="mt-1 font-mono text-sm text-primary">Restaurant Sales & Revenue Analysis</p>
@@ -902,11 +645,11 @@ export default function DataAnalyticsPage() {
               </div>
             </div>
 
-            {/* Healthcare */}
-            <div ref={refCard6} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+            {/* Healthcare (Power BI) */}
+            <div ref={refCard9} className="reveal overflow-hidden rounded-lg border border-border bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
               <div className="p-6 lg:p-8">
                 <div className="grid gap-6 lg:grid-cols-2">
-                  <img src="/images/DA5.JPG" alt="Christian Med Healthcare Dashboard" className="w-full rounded-lg object-cover h-52" />
+                  <img src="/images/DA5.JPG" alt="Christian Med Healthcare Dashboard" className="w-full rounded-lg object-cover h-52 lg:h-full" />
                   <div className="flex flex-col justify-center">
                     <h3 className="text-xl font-semibold lg:text-2xl">Christian Med Healthcare Dashboard</h3>
                     <p className="mt-1 font-mono text-sm text-primary">Hospital Revenue & Appointment Analysis</p>
