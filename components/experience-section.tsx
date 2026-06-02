@@ -1,35 +1,44 @@
 "use client"
 
 import { useScrollReveal } from "@/hooks/useScrollReveal"
-import { Briefcase, Cloud, ShoppingBag, Camera } from "lucide-react"
+import { Cloud, ShoppingBag, Camera, Code } from "lucide-react"
 
 const experiences = [
   {
-    role: "Freelance Photo & Video Editor",
+    role: "Freelance Web Developer",
     company: "Self-Employed",
-    period: "2020 - Present",
-    icon: Camera,
+    period: "2021 - Present",
+    icon: Code,
     description:
-      "Provide professional photo and video editing services for clients across social media, events, and brand content. Skilled in color grading, motion graphics, and fast turnaround under tight deadlines.",
-    tags: ["Lightroom", "Premiere Pro", "CapCut", "Canva"],
+      "Built simple landing pages and non-complex websites for various clients. Focused on clean design, responsive layouts, and user-friendly structure. Worked with basic front-end tools and handled minor revisions based on client feedback.",
+    tags: ["Frontend Development", "Responsive Design", "UI/UX"],
   },
   {
     role: "Digital Marketplace Seller",
     company: "Self-Employed",
-    period: "2018 - Present",
+    period: "2018 - 2026",
     icon: ShoppingBag,
     description:
-      "Manage an online store across multiple digital marketplaces. Handle inventory tracking, sales analytics, customer engagement, and product photography to optimize listings and drive consistent revenue.",
-    tags: ["E-Commerce", "Sales Analytics", "Product Photography"],
+      "Managed an online reselling business specializing in in-game items, NFTs, digital goods, and premium software subscriptions. Sourced international deals through market research and resold to local buyers at competitive prices. Handled inventory tracking, pricing strategy, sales analytics.",
+    tags: ["E-Commerce", "Sales Analytics", "Market Research"],
   },
   {
     role: "Cloud Computing Trainee",
-    company: "Huawei ICT Academy",
+    company: "Huawei (OJT)",
     period: "2020 - 2021",
     icon: Cloud,
     description:
-      "Completed intensive training in cloud architecture and services under the Huawei HCIA program. Gained hands-on experience with cloud deployment, networking fundamentals, and virtualization technologies.",
-    tags: ["Huawei Cloud", "Networking", "Virtualization", "HCIA Certified"],
+      "Completed HCIA-Cloud Service certification with hands-on training in VM setup and cloud security. Collaborated remotely on cloud infrastructure projects and passed Huawei's official exam.",
+    tags: ["Huawei Cloud", "VM Setup", "Cloud Security", "HCIA Certified"],
+  },
+  {
+    role: "Freelance Photo & Video Editor",
+    company: "Self-Employed",
+    period: "2020 - 2022",
+    icon: Camera,
+    description:
+      "Edited photos and created promotional videos for different clients using Canva, Photoshop, and Cap Cut. Delivered content mainly for social media and marketing use.",
+    tags: ["Photoshop", "CapCut", "Canva", "Social Media"],
   },
 ]
 
@@ -38,8 +47,9 @@ export function ExperienceSection() {
   const refCard1 = useScrollReveal(0)
   const refCard2 = useScrollReveal(150)
   const refCard3 = useScrollReveal(300)
+  const refCard4 = useScrollReveal(450)
 
-  const cardRefs = [refCard1, refCard2, refCard3]
+  const cardRefs = [refCard1, refCard2, refCard3, refCard4]
 
   return (
     <section id="experience" className="py-24 px-6">
@@ -102,4 +112,4 @@ export function ExperienceSection() {
       </div>
     </section>
   )
-} 
+}
