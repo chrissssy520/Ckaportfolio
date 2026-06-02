@@ -14,6 +14,7 @@ export default function Page() {
       <Navbar />
       <main>
         <HeroSection />
+        <ProjectsSection />
         <AboutSection />
         <SkillsSection />
         <ExperienceSection />

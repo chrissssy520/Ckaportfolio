@@ -95,25 +95,17 @@ export function HeroSection() {
        
 
             <a
-             href="/ALERchristian.pdf"
-              download="ALERchristian.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
+            href="/ALERchristian.pdf"
+  download="ALERchristian.pdf"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 rounded-md border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+>
               <ArrowDown className="size-4" />
               Download CV
             </a>
 
-            <a
-              href="https://github.com/chrissssy520"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md border border-primary px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              <Github className="size-4" />
-              GitHub
-            </a>
+      
                  <a
               href="#contact"
               className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
